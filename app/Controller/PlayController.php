@@ -16,20 +16,22 @@ class PlayController extends Controller {
 	$step_id = $this->request->query('step_id');
 	$destination_spot_id = $this->request->query('spot_id');
 	// 現在地の緯度・経度
-//	$lat = $this->request->query('lat');
-//	$lng = $this->request->query('lng');
+	$lat = $this->request->query('lat');
+	$lng = $this->request->query('lng');
 	// 天王洲アイル
 	//$lat  = 35.620525;
 	//$lng = 139.750826;
 	// 金沢駅
-	$lat  = 36.578273;
-	$lng = 136.647763;
+	//$lat  = 36.578273;
+	//$lng = 136.647763;
 	// KORINBO
-	$lat  = 36.5625;
-	$lng = 136.653;
-	// 兼六園
-	$lat  = 36.5624;
-	$lng = 136.663;
+	//$lat  = 36.5625;
+	//$lng = 136.653;
+  if ($lat == null || $lng == null) {
+	  // 現在地が送信されてこなかったら、兼六園をセット
+	  $lat  = 36.5624;
+	  $lng = 136.663;
+  }
 	// 渋谷
 	//$lat = 35.658517;
 	//$lng = 139.701334;
@@ -107,7 +109,7 @@ class PlayController extends Controller {
 		// 初回遷移時
 		// 経由地の取得
 		// TODO 
-	    	$spots = $this->Spots->find('all', array('limit' => 5, 'conditions' => array('id' => array(4,36,37))));
+	    	$spots = $this->Spots->find('all', array('limit' => 5, 'conditions' => array('id' => array(60))));
 		$waypoints = array();
 		foreach ($spots as $key => $spot) {
 			array_push($waypoints, array(

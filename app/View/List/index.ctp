@@ -1,3 +1,4 @@
+<script src="/js/app/list/index.js"></script>
 <div class="container">
     <br>
     <div style="text-align:center;">
