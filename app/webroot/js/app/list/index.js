@@ -12,7 +12,9 @@ $(function(){
 	  			lng = pos.coords.longitude;
 	  	},
 	  	// 位置情報取得失敗時
-	  	function (pos){});
+	  	function (pos){
+        alert("GPSをOnにしてください");
+      });
 	} else {
     alert("GPSをOnにしてください");
   }
