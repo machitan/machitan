@@ -1,0 +1,53 @@
+#grid-addlist {
+	list-style-type: none;
+	padding: 0;
+}
+#grid-addlist li {
+	float: left;
+	margin: 3px;
+	background-color: #556677;
+	padding: 2px 4px;
+	border-radius: 5px;
+	cursor: pointer;
+	display: none;
+}
+#grid-content {
+	clear: both;
+	overflow: hidden;
+	height: 0;
+	border: 1px solid #eb6100;
+	background-color: #EEEEEE;
+	background-repeat: repeat;
+}
+#grid-content div {
+	width: 150px;
+	height: auto;
+	border: 1px solid #000000;
+	background-color: #AAAAAA;
+	margin: 5px;
+	padding: 3px;
+}
+#grid-content div h3 {
+	font-size: 14px;
+	line-height: 1.1em;
+	margin: 0;
+	padding: 0;
+}
+#grid-content div p {
+	margin: 0;
+	padding: 0;
+}
+
+/* !!!default hide!!! */
+#grid-addlist #list-a,
+#grid-addlist #list-b,
+#grid-addlist #list-c {
+	display: inline;
+}
+#grid-a,
+#grid-b,
+#grid-c {
+	display: none;
+}
+
+/*]]>*/

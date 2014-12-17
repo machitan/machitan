@@ -1,0 +1,182 @@
+/* top banner style */
+.page-banner{
+    background-image: url(../img/bg-1.jpg);
+    background-color: #d3d3d3;
+    color: #111;
+}
+#banner-left{
+}
+#banner-right1{
+    /*background-color: #d3d3d3;*/
+}
+#banner-right2{
+    /*background-color: #d3d3d3;*/
+}
+/* top banner style */
+
+/* navigation style*/
+.navbar{
+    font-size: 100%;
+}
+.nav-sticky{
+    z-index: 10;
+}
+.is-sticky,.navbar{
+    width: 100%;
+}
+/* navigation style*/
+
+/* content base style definition */
+body{
+    font-family:
+        'Open Sans', Georgia,
+        "ヒラギノ角ゴ ProN W3",
+        "Hiragino Kaku Gothic ProN",
+        SourceHanSansJP-Regular,
+        Meiryo,
+        sans-serif;
+}
+/* content base style definition */
+
+
+/* main content style */
+.main-content{
+    background-image: url(../img/bg-1.jpg);
+    background-color: #d3d3d3;
+}
+
+#tile1{
+    /*background-image: url(../img/5.jpg);*/
+    color: #d3d3d3;
+}
+.tile{
+    height: 200px;
+}
+#toptitle {
+    text-shadow: 1px 1px 6px rgba(0,0,0,1);
+    color: #fff;
+
+    left: 1px;
+    right: 1px;
+    width: 100%;
+
+    background: rgba(0,0,0,.6);
+    -moz-box-shadow: 2px 2px 3px #000;
+    -webkit-box-shadow: 2px 2px 3px #000;
+}
+
+figure {
+    position: relative;
+    overflow: hidden;
+    width: 300px;
+    background: #222;
+    background-position: center center; 
+    background-repeat: no-repeat;
+    background-size:auto;
+}
+figure img {
+    position: relative;
+    z-index: 1;
+    -webkit-transition: .3s;
+    transition: .3s;
+}
+figure .tile-title {
+    text-shadow: 1px 1px 6px rgba(0,0,0,1);
+    padding: 0px 0px 1px;
+    color: #fff;
+    position: absolute;
+    bottom: 0;
+    left: 1px;
+    right: 1px;
+    width: 100%;
+
+    background: rgba(0,0,0,.6);
+    -moz-box-shadow: 2px 2px 3px #000;
+    -webkit-box-shadow: 2px 2px 3px #000;
+}
+figure .tile-title h3{
+    margin-left: 5px;
+    font-size: 13px;
+    font-weight: 600;
+}
+figure .tile-title p{
+    font-size: 10px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+figcaption {
+    position: absolute;
+    top: -51%;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 50%;
+
+    background: rgba(0,0,0,.8);
+    -moz-box-shadow: 2px 2px 3px #000;
+    -webkit-box-shadow: 2px 2px 3px #000;
+
+    -webkit-transition: .3s;
+    transition: .3s;
+}
+figcaption p{
+    margin-top: 5px;
+    margin-left: 5px;
+}
+figure:hover img {
+    -webkit-transform: translateY(100px);
+    transform: translateY(100px);
+}
+figure:hover figcaption {
+    bottom: 0;
+    -webkit-transform: translateY(100px);
+    transform: translateY(100px);
+}
+
+
+
+/* footer style */
+footer {
+    clear:both !important;
+    text-align: center;
+    background-color: #1b1b1b;
+}
+#footer-top{
+    background-color: #1b1b00;
+    color: #111;
+    background-image: url(../img/submit_back.jpg);
+    background-repeat: no-repeat;
+    background-size:auto;
+    background-position:0%,20%;
+    text-shadow: 1px 1px 6px rgba(255,255,255,2);
+}
+#footer-top #footer-top-message{
+}
+#footer-middle{
+    color: #d3d3d3;
+    background-color: #1b1b1b;
+}
+#footer-middle p{
+    color: #d3d3d3;
+    font-size: 15px;
+}
+#footer-middle #footer-middle-title{
+    background-color: #fff;
+}
+#footer-middle .footer-middle-icon{
+    width: 100px;
+    height: 100px;
+    border-radius: 250px;
+    -webkit-border-radius: 250px;
+    -moz-border-radius: 250px;
+    background-color: #fff;
+    background-position: center center; 
+    background-repeat: no-repeat;
+    background-size:auto;
+}
+#footer-bottom{
+    background-color: #1b1b1b;
+    color: #d3d3d3;
+}
+/* footer style */
