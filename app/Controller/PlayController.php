@@ -140,16 +140,26 @@ class PlayController extends Controller {
 		}
 
 		// Google API から経路取得
+    //経由あり
+//		$params = array(
+//				'origin' => "$lat,$lng",
+//				'destination' => $destination,
+//				'mode' => 'walking',
+//				'waypoints' => join("|", $waypointsString)
+//				);
+//	        $this->set('params', $params);
+    //経由なし
 		$params = array(
 				'origin' => "$lat,$lng",
 				'destination' => $destination,
-				'mode' => 'walking',
-				'waypoints' => join("|", $waypointsString)
+				'mode' => 'walking'
 				);
 	        $this->set('params', $params);
+	
 		$url = "http://maps.googleapis.com/maps/api/directions/json?" . http_build_query($params);
 		$res = file_get_contents($url);
-	
+debug($url);
+
 		// 経路の保存
 		$this->Directions->create();
 		$this->Directions->set('directions_json', $res);
