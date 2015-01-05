@@ -158,7 +158,6 @@ class PlayController extends Controller {
 	
 		$url = "http://maps.googleapis.com/maps/api/directions/json?" . http_build_query($params);
 		$res = file_get_contents($url);
-debug($url);
 
 		// 経路の保存
 		$this->Directions->create();
