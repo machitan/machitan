@@ -26,8 +26,6 @@ $(function(){
     var action = $('#add').attr('action');
     action += "?lat=" + lat + "&lng=" + lng;
     $('#add').attr('action', action);
-    alert($('#add').attr('action'));
-    alert(tmp);
     return true;
   });
 

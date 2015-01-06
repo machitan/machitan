@@ -27,8 +27,8 @@ class PlayController extends Controller {
 	// KORINBO
 	//$lat  = 36.5625;
 	//$lng = 136.653;
-  if ($lat == null || $lng == null) {
-	  // 現在地が送信されてこなかったら、兼六園をセット
+  if ($lat == 'null' || $lng == 'null') {
+	// 現在地が送信されてこなかったら、兼六園をセット
 	  $lat  = 36.5624;
 	  $lng = 136.663;
   }
@@ -158,6 +158,13 @@ class PlayController extends Controller {
 	
 		$url = "http://maps.googleapis.com/maps/api/directions/json?" . http_build_query($params);
 		$res = file_get_contents($url);
+    
+    //API結果判定 10km以上はなれている場合はlistへリダイレクト
+    $res_json = json_decode($res);
+    if(str_replace(" km","",$res_json->routes[0]->legs[0]->distance->text) >=10){
+      $this->redirect('/list');
+    }
+
 
 		// 経路の保存
 		$this->Directions->create();

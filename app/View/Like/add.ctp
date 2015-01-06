@@ -19,7 +19,6 @@
         }, true);
     }, true);
 </script>
-
 <script src="/js/app/like/index.js"></script>
 <div class="container">
 

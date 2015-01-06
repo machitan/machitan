@@ -23,7 +23,10 @@ class LikeController extends AppController {
        
         $this->set('direction_id',$direction_id);
         $this->set('step_id',$step_id);
-
+        if($lat == 'null' or $lng == 'null'){
+            $this->redirect('/like?direction_id=' . $direction_id . "&step_id=" . ($step_id));
+        }
+        else{
           if ($Spots->save(
             array(
               'Spots' => array(
@@ -34,9 +37,10 @@ class LikeController extends AppController {
               )
             ) 
           )
-          ){
+          )
+          {
             $this->redirect('/play?direction_id=' . $direction_id . "&step_id=" . ($step_id));
           }
-    
+        }
     }
 }
