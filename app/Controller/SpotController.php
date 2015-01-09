@@ -6,7 +6,7 @@ class SpotController extends AppController {
     public function index() {
 	   $direction_id = $this->request->query('direction_id');
 	   $step_id = $this->request->query('step_id');
-       $spot_id = $this->request->query('spot_id'); 
+     $spot_id = $this->request->query('spot_id'); 
 
 	   $this->set('direction_id', $direction_id);
 	   $this->set('step_id', $step_id);

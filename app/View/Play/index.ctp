@@ -26,6 +26,7 @@
     </div>
 
     <form action="/play" method="get">
+        <input type="hidden" name="spot_id" value="<?php echo $destination_spot_id ?>" />
         <input type="hidden" name="direction_id" value="<?php echo $direction_id ?>" />
         <input type="hidden" name="step_id" value="<?php echo $step_id ?>" />
     	<input type="submit" class="btn btn-info btn-lg" value="スポット到着！" style="width:100%;" />

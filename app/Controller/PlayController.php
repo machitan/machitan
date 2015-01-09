@@ -35,12 +35,15 @@ class PlayController extends Controller {
 	// 渋谷
 	//$lat = 35.658517;
 	//$lng = 139.701334;
-
 	if ($direction_id == null) {
 		// 初回遷移時
 		// ルートを決定し保存する
 		$direction_id = $this->__findDirection($lat, $lng, $destination_spot_id);
 	}
+  else if($direction_id != null && $step_id == '') {
+    //ゴールSpot画面からの遷移時はEvalへリダイレクト
+		$this->redirect('/eval?direction_id=' . $direction_id);
+  }
 	
 	// 経路JSONの取得
 	$directions = $this->Directions->find('first', array(
@@ -67,6 +70,7 @@ class PlayController extends Controller {
 
 	if ($step != null) {
 		$this->set('step', $step);
+		$this->set('destination_spot_id', $destination_spot_id);
 		$this->set('direction_id', $direction_id);
 		$this->set('step_id', $next_step_id);
 		$this->set('previous_step_id', $next_step_id -1);
@@ -81,7 +85,7 @@ class PlayController extends Controller {
 
 	} else {
 		// ゴール画面に遷移
-		$this->redirect('/eval?direction_id=' . $direction_id);
+  		$this->redirect('/spot?spot_id=' . $destination_spot_id . '&direction_id=' . $direction_id);
 	}
     }
 	
@@ -159,9 +163,9 @@ class PlayController extends Controller {
 		$url = "http://maps.googleapis.com/maps/api/directions/json?" . http_build_query($params);
 		$res = file_get_contents($url);
     
-    //API結果判定 10km以上はなれている場合はlistへリダイレクト
+    //API結果判定 20km以上はなれている場合はlistへリダイレクト
     $res_json = json_decode($res);
-    if(str_replace(" km","",$res_json->routes[0]->legs[0]->distance->text) >=10){
+    if(str_replace(" km","",$res_json->routes[0]->legs[0]->distance->text) >=20){
       $this->redirect('/list');
     }
 
