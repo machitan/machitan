@@ -8,6 +8,7 @@
 </script>
 
 <div class="container">
+    <div class="alert alert-info" role="alert">次のスポットまで<?php echo $step->distance->text; ?></div>
     <div class="flexslider">
         <ul class="slides">
             <li>
