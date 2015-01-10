@@ -28,19 +28,32 @@
     </div>
     <br>
     
-    <form method="post" action="like/add" id="add">
+    <form method="post" enctype="multipart/form-data" action="like/add" id="add">
         <div class="panel panel-info" id="about-info">
             <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　あなたの撮ったまちの写真</div>
             <div class="panel-body">
                 <img id="image" width="100%">
-                <input type="file" accept="image/*;capture=camera" id="imageFile" name="pictrure" />
+                <input type="file" accept="image/*;capture=camera" id="imageFile" name="picture" />
             </div>
         </div>
 
         <div class="panel panel-info" id="about-info">
             <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　スポットのお名前を入力してください</div>
             <div class="panel-body">
-                <input type="text" id="name" name="name" style="width:100%">
+                <input type="text" id="name" name="name" style="width:100%" required>
+            </div>
+        </div>
+
+        <div class="panel panel-info" id="about-info">
+            <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>カテゴリを選択してください</div>
+            <div class="panel-body">
+              <select class="selectpicker" name="category_id">
+                  <option value="1">食べる</option>
+                  <option value="2">買う</option>
+                  <option value="3">遊ぶ</option>
+                  <option value="4">公共</option>
+                  <option value="0">その他</option>
+              </select>
             </div>
         </div>
 

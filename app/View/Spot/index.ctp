@@ -34,7 +34,7 @@
                 <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span> このスポットはどんなところ？</div>
                 <div class="panel-body">
                     <p>
-                        <?php echo $spot_info[0][ 'Spot'][ 'description']?>
+                        <?php echo $spot_info[0]['Spot']['description']?>
                     </p>
                 </div>
             </div>

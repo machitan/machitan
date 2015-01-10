@@ -1,3 +1,5 @@
+<script src="/js/app/list/index.js"></script>
+
 <div class="jumbotron" style="background-image:url('../img/machitan_pic/27.jpg'); background-position: center center; background-size:cover;">
     <div class="container">
         <div class="row">
@@ -22,7 +24,13 @@
         <br>
         <br>
         <div style="text-align:center;">
-            <a class="btn btn-info btn-lg" href="list" style="width:100%;">かたまちをたんさくする</a>
+            <div style="color: #fff; text-shadow: 2px 2px 8px rgba(0,0,0,1); ">
+            <?php 
+                if($geo_info != null){
+                echo "<h3>現在地が取得できませんでした。もう一度ボタンをタッチしてください</h3>";
+            } ?>
+            <a class="btn btn-info btn-lg" href="list?geo_info=" style="width:100%;">かたまちをたんさくする</a>
+            </div>
         </div>
     </div>
 </div>

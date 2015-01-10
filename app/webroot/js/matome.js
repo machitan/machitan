@@ -1,8 +1,9 @@
 // Activates the Carousel
+/*
 $('.carousel').carousel({
     interval: 5000
 })
-
+*/
 //Sticky.js
 /*$(document).ready(function(){
     $(".nav-sticky").sticky({topSpacing:0});
