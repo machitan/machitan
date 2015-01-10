@@ -3,7 +3,7 @@
 class PlayController extends Controller
 {
 
-    public $components = array('DebugKit.Toolbar');
+    public $components = array('Session', 'DebugKit.Toolbar');
     public $uses = array('Spots', 'Directions', 'DirectionSpotRels', 'Tours', 'TourSpotRels');
 
     public function index()
@@ -17,6 +17,10 @@ class PlayController extends Controller
         $destination_spot_id    = $this->request->query('spot_id');
         $lat                    = $this->request->query('lat'); // 現在地の緯度
         $lng                    = $this->request->query('lng'); // 現在地の経度
+
+        // スポットページからの遷移かどうかを取得
+        $spot_page_flg = $this->Session->read('spot_page_flg');
+        $this->Session->write('spot_page_flg', false); // フラグを下げる
 
         if ($direction_id == null) {
             // 初回遷移時
@@ -62,9 +66,9 @@ class PlayController extends Controller
 
             // 現在Spotがstepかどうかチェック！！
             $stepSpot = $this->__getStepSpot($directions, $step);
-            if ($stepSpot != null) {
+            if ($stepSpot != null && !$spot_page_flg) {
 
-                // Spot画面に遷移
+                // Spot画面に遷移 (直前がスポットページの場合は、遷移しない)
                 $this->redirect('/spot?direction_id=' . $direction_id . "&step_id=" . ($next_step_id) . "&spot_id=" . $stepSpot['id']);
             }
 
