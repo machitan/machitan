@@ -19,8 +19,17 @@ class EvalController extends AppController {
         $this->set('start_lat',$d_json['routes'][0]['legs'][0]['start_location']['lat']);
         $this->set('start_lng',$d_json['routes'][0]['legs'][0]['start_location']['lng']);
         
-        $this->set('end_lat',$d_json['routes'][0]['legs'][0]['end_location']['lat']);
-        $this->set('end_lng',$d_json['routes'][0]['legs'][0]['end_location']['lng']);
+        $num_of_spots = count($d_json['routes'][0]['legs']);
+        
+        $waypoints = array();
+        for ($i = 1; $i < $num_of_spots ; $i++){
+            array_push($waypoints,$d_json['routes'][0]['legs'][$i]['start_location']['lat']. "," . $d_json['routes'][0]['legs'][$i]['start_location']['lng']);
+        }              
+        $this->set('waypoints',$waypoints);
+        $this->set('num_of_waypoints',count($waypoints));
+                       
+        $this->set('end_lat',$d_json['routes'][0]['legs'][$num_of_spots-1]['end_location']['lat']);
+        $this->set('end_lng',$d_json['routes'][0]['legs'][$num_of_spots-1]['end_location']['lng']);
         
         
         /*

@@ -45,7 +45,7 @@
         <row>
             <div class="row">
                 <div class="col-md-6 col-xs-6">
-                    <form action="spot/like" method="get">
+                    <form action="play/like" method="get">
                         <input type="hidden" name="direction_id" value="<?php echo $direction_id ?>" />
                         <input type="hidden" name="step_id" value="<?php echo $step_id ?>" />
                         <input type="hidden" name="spot_id" value="<?php echo $spot_id ?>" />

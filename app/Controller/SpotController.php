@@ -26,4 +26,34 @@ class SpotController extends AppController
 
     }
 
+    public function like()
+    {
+      $direction_id   = $this->request->query('direction_id');
+      $step_id        = $this->request->query('step_id');
+      $spot_id        = $this->request->query('spot_id');
+
+      $Spot = ClassRegistry::init('Spot');
+      $spot_id = $this->request->query('spot_id');
+      $spot_info = $Spot->find('all',
+            array('conditions' => array(
+                'id' => $spot_id)));
+
+      $spot_info[0]['Spot']['like_num']++;
+      $data = array(
+        'id' => $spot_id,
+        'like_num' => $spot_info[0]['Spot']['like_num']
+      );
+      $fields = array('like_num');
+      debug($spot_info);
+      debug($data);
+      if ($Spot->save($data,false,$fields))
+      {
+        $this->redirect('/spot?direction_id=' . $direction_id . "&step_id=" . ($step_id) . "&spot_id=" . $spot_id);
+      }
+      else{
+      debug("err");
+      }
+
+    }
+
 }

@@ -19,15 +19,13 @@
         </li>
         <li><a href="#tab3" data-toggle="tab">遊ぶ</a>
         </li>
-        <li><a href="#tab4" data-toggle="tab">公共</a>
-        </li>
-        <li><a href="#tab5" data-toggle="tab">その他</a>
+        <li><a href="#tab4" data-toggle="tab">その他</a>
         </li>
     </ul>
     <!--タブコンテンツ-->
   <div id="myTabContent" class="tab-content">
 
-  <?php for ($i = 1; $i <= 5 ; $i++){?>
+  <?php for ($i = 1; $i <= 4 ; $i++){?>
     <div class="tab-pane fade in active" id="tab<?php echo $i ?>">
   	<ul class="list-group">
   	<?php 

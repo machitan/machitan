@@ -41,6 +41,7 @@ class PlayController extends Controller
         // 経路JSONのデコード
         $directions_json = json_decode($directions['Directions']['directions_json']);
 
+        // 経路のステップ情報を一つの配列にマージ
         $stepAll = array();
         foreach ($directions_json->routes[0]->legs as $l) {
             foreach ($l->steps as $i) {
