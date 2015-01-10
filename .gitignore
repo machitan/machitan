@@ -27,3 +27,4 @@ ehthumbs.db
 Thumbs.db
 
 *.sw*
+app/webroot/img/machitan_pic/*
