@@ -3,8 +3,13 @@
 class PlayController extends Controller
 {
 
+    /**
+     * 経由地とスポットを同一とみなす距離
+     */
+    const THRESHOLD_M = 50;
+
     public $components = array('Session', 'DebugKit.Toolbar');
-    public $uses = array('Spots', 'Directions', 'DirectionSpotRels', 'Tours', 'TourSpotRels');
+    public $uses = array('Spots', 'Directions', 'DirectionSpotRels', 'Tours', 'TourSpotRels', 'DirectionsJson');
 
     public function index()
     {
@@ -14,18 +19,15 @@ class PlayController extends Controller
          */
         $direction_id           = $this->request->query('direction_id'); // 経路ID
         $step_id                = $this->request->query('step_id'); // Step
-        $destination_spot_id    = $this->request->query('spot_id');
+        $destination_spot_id    = $this->request->query('destination_spot_id');
         $lat                    = $this->request->query('lat'); // 現在地の緯度
         $lng                    = $this->request->query('lng'); // 現在地の経度
-
-        // スポットページからの遷移かどうかを取得
-        $spot_page_flg = $this->Session->read('spot_page_flg');
-        $this->Session->write('spot_page_flg', false); // フラグを下げる
+        $waypoint_onoff         = $this->request->query('waypoints_onoff'); // 経由地の有無
 
         if ($direction_id == null) {
             // 初回遷移時
             // ルートを決定し保存する
-            $direction_id = $this->__findDirection($lat, $lng, $destination_spot_id);
+            $direction_id = $this->__findDirection($lat, $lng, $destination_spot_id, $waypoint_onoff);
         } else if ($direction_id == -1) {
             // ListからLikeに遷移していた場合はTop画面へ遷移
             $this->redirect('/');
@@ -38,39 +40,34 @@ class PlayController extends Controller
         $directions = $this->Directions->find('first', array(
             'conditions' => array('id' => $direction_id)
         ));
-        // 経路JSONのデコード
-        $directions_json = json_decode($directions['Directions']['directions_json']);
+        // 経路JSONオブジェクトを生成する
+        App::uses('DirectionsJson', 'Lib');
+        $directions_json = new DirectionsJson($directions['Directions']['directions_json']);
 
-        // 経路のステップ情報を一つの配列にマージ
-        $stepAll = array();
-        foreach ($directions_json->routes[0]->legs as $l) {
-            foreach ($l->steps as $i) {
-                array_push($stepAll, $i);
-            }
+        // 次のstepを取得
+        if ($step_id == null) {
+            // 初回遷移時
+            $step_id = 0;
+            $next_step = $directions_json->steps[$step_id];
+        } else {
+            $next_step = $directions_json->getNextStep($step_id);
         }
 
-        // ルート検索の結果情報を撮りたい場合は、こんな感じ
-        //$total_distance = $legs->distance->text;
-        //$total_duration = $legs->duration->text;
-
-        // 次のstepを存在チェックして取得
-        $next_step_id = ($step_id == null) ? 0 : $step_id + 1;
-        $step = (count($stepAll) > $next_step_id)
-            ? $stepAll[$next_step_id] : null;
-
-        if ($step != null) {
-            $this->set('step', $step);
+        if ($next_step != null) {
+            $this->set('step', $next_step);
             $this->set('destination_spot_id', $destination_spot_id);
             $this->set('direction_id', $direction_id);
-            $this->set('step_id', $next_step_id);
-            $this->set('previous_step_id', $next_step_id - 1);
+            $this->set('step_id', $step_id + 1);
+            $this->set('previous_step_id', $step_id);
 
-            // 現在Spotがstepかどうかチェック！！
-            $stepSpot = $this->__getStepSpot($directions, $step);
-            if ($stepSpot != null && !$spot_page_flg) {
+            if ($next_step->is_way_point && !$next_step->is_last) {
+                // 経由地に到着した場合
 
-                // Spot画面に遷移 (直前がスポットページの場合は、遷移しない)
-                $this->redirect('/spot?direction_id=' . $direction_id . "&step_id=" . ($next_step_id) . "&spot_id=" . $stepSpot['id']);
+                // Stepに対応するSpotを取得
+                $spot = $this->__getStepSpot($directions, $next_step);
+
+                // Spot画面に遷移
+                $this->redirect('/spot?direction_id=' . $direction_id . "&step_id=" . ($step_id + 1) . "&spot_id=" . $spot['id'] ."&destination_spot_id=" . $destination_spot_id);
             }
 
         } else {
@@ -79,7 +76,13 @@ class PlayController extends Controller
         }
     }
 
-    // 現在Spotがstepかどうかチェック！！
+    /**
+     * Stepに対応するSpotを返す
+     *
+     * @param $directions
+     * @param $step
+     * @return null
+     */
     private function __getStepSpot($directions, $step)
     {
 
@@ -87,26 +90,32 @@ class PlayController extends Controller
             $spots = $this->Spots->find('first', array(
                 'conditions' => array('id' => $row['spot_id'])
             ));
+
             // 2点間の距離を取得
             $distance = $this->__location_distance(
                 $spots['Spots']['lat'], $spots['Spots']['lng'],
-                $step->start_location->lat, $step->start_location->lng);
+                $step->end_location->lat, $step->end_location->lng);
 
-            // XXm以下であれば、Spotとみなす
-            if ($distance['distance'] <= 75) {
-                return $spots['Spots'];
-            }
+            // 距離が閾値以下であればSpotとみなす
+            if ($distance['distance'] <= self::THRESHOLD_M)
+            return $spots['Spots'];
+
         }
-        return null;
+
+        // 基本的に有りえない
+        throw new Exception('近傍のスポットが見つかりません.');
     }
 
     /**
+     * 経路検索を行う
+     *
      * @param $lat 現在地の緯度
      * @param $lng 現在地の経度
      * @param $destination_spot_id 目的地のSpotId
+     * @param $waypoint_onoff 経由するかどうか
      * @return mixed
      */
-    private function __findDirection($lat, $lng, $destination_spot_id)
+    private function __findDirection($lat, $lng, $destination_spot_id, $waypoint_onoff)
     {
         /*
          * 経由地の取得
@@ -115,7 +124,6 @@ class PlayController extends Controller
         $spots = $this->Spots->find('all', array('conditions' => array(
             'id' => $spot_ids
         )));
-
         $waypoints = array();
         foreach ($spots as $key => $spot) {
             array_push($waypoints, array(
@@ -123,12 +131,16 @@ class PlayController extends Controller
                 'lng' => $spot['Spots']['lng']
             ));
         }
-        $destination_lat = $waypoints[count($waypoints) - 1]['lat'];
-        $destination_lng = $waypoints[count($waypoints) - 1]['lng'];
-        $destination = "$destination_lat,$destination_lng";
 
-        // Goalが指定された場合
-        if ($destination_spot_id != null) {
+        if ($destination_spot_id == null) {
+            // Goalが指定されない場合は、最後の経由地を目的地とみなす
+            $last = array_pop($waypoints);
+
+            $destination_lat = $last['lat'];
+            $destination_lng = $last['lng'];
+            $destination = "$destination_lat,$destination_lng";
+        } else {
+            // Goalが指定された場合は、Spot情報を取得し、ゴールとする
             $destination_spots = $this->Spots->find('first', array(
                 'conditions' => array('id' => $destination_spot_id)
             ));
@@ -145,25 +157,26 @@ class PlayController extends Controller
             array_push($waypointsString, $wLocation);
         }
 
-        $waypoints_test = array();
-        array_push($waypoints_test, "35.5757,139.66");
-
         // Google API から経路取得
         //経由あり
-		$params = array(
-				'origin' => "$lat,$lng",
-				'destination' => $destination,
-				'mode' => 'walking',
-				'waypoints' => join("|", $waypointsString)
-				);
+        if($waypoint_onoff == 'on'){
+		      $params = array(
+				  'origin' => "$lat,$lng",
+				  'destination' => $destination,
+				  'mode' => 'walking',
+				  'waypoints' => join("|", $waypointsString)
+				  );
 	        $this->set('params', $params);
+        }
         //経由なし
-//        $params = array(
-//            'origin' => "$lat,$lng",
-//            'destination' => $destination,
-//            'mode' => 'walking'
-//        );
-//        $this->set('params', $params);
+        else{
+          $params = array(
+              'origin' => "$lat,$lng",
+              'destination' => $destination,
+              'mode' => 'walking'
+          );
+          $this->set('params', $params);
+        }
 
         $url = "http://maps.googleapis.com/maps/api/directions/json?" . http_build_query($params);
         $res = file_get_contents($url);

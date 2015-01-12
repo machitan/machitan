@@ -38,7 +38,8 @@ function calcRoute() {
   directionsService.route(request, function(response, status) {
     if (status == google.maps.DirectionsStatus.OK) {
       directionsDisplay.setDirections(response);
-      var route = response.routes[0];
+      /*
+        var route = response.routes[0];
       var summaryPanel = document.getElementById('directions_panel');
       summaryPanel.innerHTML = '';
       // For each route, display summary information.
@@ -48,12 +49,12 @@ function calcRoute() {
         summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
         summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
         summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
-      }
+      }*/
     }
   });
-}
+ }
 
-google.maps.event.addDomListener(window, 'load', initialize);
+    google.maps.event.addDomListener(window, 'load', initialize);
 
     $(document).ready(function () {
         // simple jRating call
@@ -82,6 +83,25 @@ google.maps.event.addDomListener(window, 'load', initialize);
         });
         
         setTimeout(function(){calcRoute()},500);
+    
+    });
+    
+    window.onload = function(){
+     /*
+        var mapHight = document.write(window.innerHight) * 0.8;
+        var mapWidth = document.write(window.innerWidth) * 0.8;
+        
+        //document.getElementById('map-canvas').style.hight = mapHight;
+        //document.getElementById('map-canvas').style.width = mapWidth;
+        
+        alert(mapHight);
+        $('div#map-canvas').attr('width', 100);
+       */ 
+    }
+    
+    $(window).on('load resize', function(){
+        var w = $(window).width() * 0.9;
+        $('div#map-canvas').attr('width', w);
     });
     
 </script>
@@ -90,11 +110,11 @@ google.maps.event.addDomListener(window, 'load', initialize);
     <div class="panel panel-info" id="about-info">
         <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　今のお散歩コース</div>
         <div class="panel-body">
-               <div id="map-canvas" style="width: 500px; height: 500px"></div>
+               <div id="map-canvas" style="height:400px;"></div>
         </div>
-        <!-- <pre><?php print_r($direction_json); ?> </pre> -->
     </div>
 
+    <!--
     <div class="panel panel-info" id="about-info">
         <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　今のお散歩コースはいかがでしたか？</div>
         <div class="panel-body">
@@ -102,6 +122,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
         <div class="basic" data-average="12" data-id="1"></div>
         </div>
     </div>
+    -->
 
     <div style="text-align:center;">
         <a class="btn btn-info btn-lg" href="/" style="width:100%;">もう一度ぶらりする</a>

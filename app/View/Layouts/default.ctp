@@ -14,7 +14,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-$cakeDescription = __d('cake_dev', 'まちつむぎ！');
+$cakeDescription = __d('cake_dev', 'まちたん！');
 /*$cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())*/
 $time_newest = time();
 //header( "Last-Modified: " . gmdate( "D, d M Y H:i:s", $time_newest ) . " GMT" );
@@ -85,6 +85,14 @@ echo $this->fetch('script');
         <script async src="/js/bootstrap-transition.js"></script>
 
         <script async src="/js/matome.js"></script>
+        
+        <style>
+        #map-canvas {
+            height: 100%;
+            margin: 0px;
+            padding: 0px
+        } 
+        </style>
     </head>
 
     <body>

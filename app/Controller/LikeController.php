@@ -10,6 +10,7 @@ class LikeController extends AppController
 
         $direction_id = $this->request->query('direction_id');
         $step_id = $this->request->query('step_id');
+        $destination_spot_id = $this->request->query('destination_spot_id');
 
         //Listからの遷移時にスポット登録後Listへリダイレクト
         if ($this->request->query('first')) {
@@ -19,6 +20,7 @@ class LikeController extends AppController
             $this->set('direction_id', $direction_id);
         }
         $this->set('step_id', $step_id);
+        $this->set('destination_spot_id', $destination_spot_id);
 
     }
 
@@ -27,18 +29,23 @@ class LikeController extends AppController
         $Spots = ClassRegistry::init('Spots');
         $direction_id = $this->request->data['direction_id'];
         $step_id = $this->request->data['step_id'];
+        $destination_spot_id = $this->request->data['destination_spot_id'];
 
         $lat = $this->request->query('lat');
         $lng = $this->request->query('lng');
 
         $this->set('direction_id', $direction_id);
         $this->set('step_id', $step_id);
-
+        $this->set('destination_spot_id', $destination_spot_id);
 
         if ($lat == 'null' or $lng == 'null') {
-            $this->redirect('/like?direction_id=' . $direction_id . "&step_id=" . ($step_id));
-        } else {
-            if ($Spots->save(
+            //位置情報取得に失敗
+            $this->Session->setFlash('現在地が取得できません。', 'default', array('class' => 'alert alert-success'));
+            $this->redirect('/like?direction_id=' . $direction_id . "&step_id=" . ($step_id) .  "&destination_spot_id=" . $destination_spot_id);
+        }else{
+          if (is_uploaded_file($_FILES["picture"]["tmp_name"])) {
+            if (move_uploaded_file($_FILES["picture"]["tmp_name"], "img/machitan_pic/" . $_FILES["picture"]["name"])) {
+              if ($Spots->save(
                 array(
                     'Spots' => array(
                         'lat' => $lat,
@@ -48,22 +55,25 @@ class LikeController extends AppController
                         'category_id' => $this->request->data['category_id']
                     )
                 )
-            )
-            ) {
+            )){
                 $file_name = $Spots->getLastInsertID() . ".jpg";
-                if (is_uploaded_file($_FILES["picture"]["tmp_name"])) {
-                    if (move_uploaded_file($_FILES["picture"]["tmp_name"], "img/machitan_pic/" . $file_name)) {
-                        chmod("img/machitan_pic/" . $file_name, 0664);
-                        echo $_FILES["picture"]["name"] . "をアップロードしました。";
-                    } else {
-                        echo "ファイルをアップロードできません。";
-                    }
-                } else {
-                    echo "ファイルが選択されていません。";
-                }
+                rename("img/machitan_pic/" . $_FILES["picture"]["name"],"img/machitan_pic/" . $file_name);
+                chmod("img/machitan_pic/" . $file_name, 0664);
+                echo $_FILES["picture"]["name"] . "をアップロードしました。";
                 $this->Session->setFlash('スポットが登録されました！', 'default', array('class' => 'alert alert-success'));
-                $this->redirect('/play?direction_id=' . $direction_id . "&step_id=" . ($step_id));
-            }
+                $this->redirect('/play?direction_id=' . $direction_id . "&step_id=" . ($step_id) . "&destination_spot_id=" . $destination_spot_id);
+
+              }
+           } else {
+                //ファイルのアップロードの失敗
+                $this->Session->setFlash('ファイルをアップロードできません。', 'default', array('class' => 'alert alert-success'));
+                $this->redirect('/like?direction_id=' . $direction_id . "&step_id=" . ($step_id) .  "&destination_spot_id=" . $destination_spot_id);
+          }
+          } else {
+            //アップロードファイルが未選択
+            $this->Session->setFlash('ファイルが選択されていません。', 'default', array('class' => 'alert alert-success'));
+            $this->redirect('/like?direction_id=' . $direction_id . "&step_id=" . ($step_id) .  "&destination_spot_id=" . $destination_spot_id);
+          }
         }
     }
 }

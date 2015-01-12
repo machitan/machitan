@@ -2,9 +2,6 @@
     $(window).load(function () {
         $('.flexslider').flexslider();
     });
-
-	var lat = <?php echo $step->end_location->lat ?>; 
-	var lng = <?php echo $step->end_location->lng ?>; 
 </script>
 
 <div class="container">
@@ -27,9 +24,12 @@
     </div>
 
     <form action="/play" method="get">
-        <input type="hidden" name="spot_id" value="<?php echo $destination_spot_id ?>" />
+    <!--
+        <input type="hidden" name="spot_id" value="<?php echo $spot_id ?>" />
+        -->
         <input type="hidden" name="direction_id" value="<?php echo $direction_id ?>" />
         <input type="hidden" name="step_id" value="<?php echo $step_id ?>" />
+        <input type="hidden" name="destination_spot_id" value="<?php echo $destination_spot_id ?>" />
     	<input type="submit" class="btn btn-info btn-lg" value="スポット到着！" style="width:100%;" />
     </form>
 	<br><br>
@@ -37,6 +37,7 @@
     <form action="/like" method="get">
         <input type="hidden" name="direction_id" value="<?php echo $direction_id ?>" />
         <input type="hidden" name="step_id" value="<?php echo $previous_step_id ?>" />
+        <input type="hidden" name="destination_spot_id" value="<?php echo $destination_spot_id ?>" />
     	<input type="submit" class="btn btn-info btn-lg" value="ナイススポット発見！" style="width:100%;" />
     </form>
     <br><br>

@@ -26,7 +26,7 @@ class ListController extends AppController {
 	$Spot = ClassRegistry::init('Spot');
 	$spots = $Spot->find('all',
                         array(
-                        'fields'=>Array('id','name','category_id'),
+                        'fields'=>Array('id','name','category_id','description','like_num'),
                         'conditions' => array(
                             'and' => array(
                                 array('lat BETWEEN ? AND ?' => 
@@ -44,6 +44,11 @@ class ListController extends AppController {
     $this->set('num_of_spots',$num_of_spots);
     
     //とりあえずぶらり用にランダムにspot_idを指定する
-    $this->set('rand_spot_id',$spots[rand(0,$num_of_spots-1)]['Spot']['id']);
+    if($num_of_spots > 0){
+      $this->set('rand_spot_id',$spots[rand(0,$num_of_spots-1)]['Spot']['id']);
+    }
+    else{
+
+    }
     }
 }

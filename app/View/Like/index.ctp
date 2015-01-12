@@ -30,7 +30,7 @@
     
     <form method="post" enctype="multipart/form-data" action="like/add" id="add">
         <div class="panel panel-info" id="about-info">
-            <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　あなたの撮ったまちの写真</div>
+            <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　あなたの撮ったまちの写真（必須）</div>
             <div class="panel-body">
                 <img id="image" width="100%">
                 <input type="file" accept="image/*;capture=camera" id="imageFile" name="picture"/>
@@ -38,7 +38,7 @@
         </div>
 
         <div class="panel panel-info" id="about-info">
-            <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　スポットのお名前を入力してください</div>
+            <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　スポットのお名前を入力してください（必須）</div>
             <div class="panel-body">
                 <input type="text" id="name" name="name" style="width:100%" class="form-control" required>
             </div>
@@ -67,5 +67,6 @@
         </p>
         <input type="hidden" name="direction_id" value="<?php echo $direction_id?>">
         <input type="hidden" name="step_id" value="<?php echo $step_id?>">
+        <input type="hidden" name="destination_spot_id" value="<?php echo $destination_spot_id?>">
     </form>
 </div>
