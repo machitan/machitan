@@ -4,6 +4,7 @@
 App::uses('Controller', 'Controller');
 
 
-class ArchivesController extends Controller {        
+class ArchivesController extends Controller
+{
 
 }

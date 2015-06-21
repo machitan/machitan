@@ -4,6 +4,7 @@
 App::uses('Controller', 'Controller');
 
 
-class TrendsController extends Controller {        
+class TrendsController extends Controller
+{
 
 }

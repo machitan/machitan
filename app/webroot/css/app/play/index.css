@@ -1,0 +1,36 @@
+div#katamacchi {
+    position: relative;
+}
+
+div#katamacchi img{
+    display: block;
+    width: 35px;
+    position: absolute;
+    margin-left: -15px;
+    top: -19px;
+}
+
+span.goal{
+    position: absolute;
+    right: -7px;
+    margin-top: -10px;
+}
+
+.progress {
+    background-color: #ffffff;
+    margin-bottom: 0px;
+}
+
+.popover-static .popover {
+    position: relative;
+    display: block;
+    margin: 20px;
+    width: 100%;
+}
+
+.flexslider {
+  margin-bottom: 0px;
+}
+.flex-control-nav {
+  display: none;
+}

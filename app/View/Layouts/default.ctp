@@ -14,12 +14,11 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-$cakeDescription = __d('cake_dev', 'まちつむぎ！');
+$cakeDescription = __d('cake_dev', 'まちたん！');
 /*$cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())*/
 $time_newest = time();
 //header( "Last-Modified: " . gmdate( "D, d M Y H:i:s", $time_newest ) . " GMT" );
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
     <head>
@@ -36,107 +35,110 @@ $time_newest = time();
         <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
         <?php
-    echo $this->Html->meta('icon');
+            echo $this->Html->meta('icon');
 
-/*original cake css*/
-//echo $this->Html->css('cake.generic');
+            /*bootstrap files*/
+            echo $this->Html->css('bootstrap.min.css');
 
-/*grid css in body*/
-echo $this->Html->css('tileindex.css');
+            echo $this->Html->css('flexslider.css');
 
-/*bootstrap files*/
-echo $this->Html->css('bootstrap.min.css');
-
-echo $this->Html->css('flexslider.css');
-//echo $this->Html->js('jquery.flexslider.js');
-//echo $this->Html->script('bootstrap.min.js');
-
-
-
-echo $this->fetch('meta');
-echo $this->fetch('css');
-echo $this->fetch('script');
+            echo $this->fetch('meta');
+            echo $this->fetch('css');
+            echo $this->fetch('script');
         ?>
-        
-        <script src="/js/jRating.jquery.min.js"></script>
-        <style src="/css/jRating.jquery.css"></style>
        
-         <script src="/js/jquery.rateyo.min.js"></script>
+        <script src="/js/jquery.rateyo.min.js"></script>
         <style src="/css/jquery.rateyo.min.css"></style>
-       
         
         <script src="/js/jquery.flexslider.js"></script>
 
         <style async src="/css/cake.generic"></style>
        
-        <script async src="/js/bootstrap.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
 
         <script async src="/js/jquery.easing.compatibility.js"></script>
-        <script async src="/js/jquery.vgrid.min.js"></script>
+        <!-- <script async src="/js/jquery.vgrid.min.js"></script> -->
 
         <script async src="/js/bootstrap-transition.js"></script>
 
-        <script async src="/js/matome.js"></script>
+        <!-- Material Design for bootstrap -->
+        <link href="/css/material-css/roboto.min.css" rel="stylesheet">
+        <link href="/css/material-css/material.min.css" rel="stylesheet">
+        <link href="/css/material-css/ripples.min.css" rel="stylesheet">
+        <script src="/js/ripples.min.js"></script>
+        <script src="/js/material.min.js"></script>
+        
+        <style>
+        #map-canvas {
+            height: 100%;
+            margin: 0px;
+            padding: 0px
+        }
+        </style>
+        
+        <script>
+            $(document).ready(function() {
+                // This command is used to initialize some elements and make them work properly
+                $.material.init();
+            });
+        </script>
+        
+        <!--  sweetalert -->
+        <script src="/js/sweetalert.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="/css/sweetalert.css">
     </head>
 
     <body>
 
-        <header>
-            <!-- タイトルヘッダ -->
-            <div class="page-banner">
-                <nav class="navbar navbar-inverse" role="navigation">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="/">まちたん！</a>
-    </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        
-      </ul>
-        <p class="navbar-text navbar-right">いってらっしゃい！ <a href="#" class="navbar-link">くまなみ</a>さん</p>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
-                <div class="container"></div>
+    <header>
+        <div class="page-banner">
+            <nav class="navbar navbar-inverse" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                      </button>
+                      <a class="navbar-brand" href="/?top=">まちたん！</a>
+                    </div>
+                    <!--div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                      <ul class="nav navbar-nav"></ul>
+                      <p class="navbar-text navbar-right"><a href="#" class="navbar-link">news</a></p>
+                    </div-->
                 </div>
-            <!-- タイトルヘッダ -->
-        </header>    
+            </nav>
+        </div>
+    </header>
 
-            
-        <!-- コンテンツ -->
-        <div class="main-content">
+
+        <div class="main-content" style="margin-bottom: 50px;">
             <?php echo $this->Session->flash(); ?>
             <?php echo $this->fetch('content'); ?>
         </div><!--/.main-content-->
-        <!-- コンテンツ -->
 
-        <!-- フッター -->
-        <footer>
-        <!-- 最下段フッター -->
-        <div id="footer-bottom">
-            <p  class="muted credit">&copy; 2014<?php if(date("Y")!=2014) echo date("-Y"); ?> All rights reserved, まちたん！＠社会実装型ハッカソン まちつむぎ</p>                
-            <br>
-        </div>
-        <!-- 最下段フッター -->
-
+<!--
+        <footer style="position:fixed; bottom: 0px; width:100%; font-size:10px; background-color:#D3D3D3">
+            <div id="footer-bottom">
+                <div style="text-align:center">
+                    <p  class="muted credit">&copy; 2014
+                        <?php if(date("Y")!=2014) echo date("-Y"); ?>
+                        All rights reserved, まちたん！＠社会実装型ハッカソン まちつむぎ
+                    </p>
+                </div>
+            </div>
         </footer>
-    <!-- フッター -->
+-->
     </body>
 </html>
