@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>jQueryの練習</title>
+    </head>
+    
+    <body>
+    
+        <p>jQueryの練習</p>
+    
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    
+        <ul id="main">
+            <li>0</li>
+            <li class="item">1</li>
+            <li class="item">2</li>
+            <li>3</li>
+            <li>
+                <ul id="sub">
+                    <li>0</li>
+                    <li class="item">1</li>
+                    <li class="item">2</li>
+                    <li>3</li>
+                </ul>
+            </li>
+        </ul>
+        <script>
+        $(function(){
+            $('p').css('color','red').hide('slow').show('slow');
+            $('#sub > li:even').css('color','blue');
+            //$('.item + .item').css('color','green');
+        });
+        </script>
+    
+    </body>
+
+</html>
