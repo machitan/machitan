@@ -7,7 +7,6 @@ class LikeController extends AppController
 
     public function index()
     {
-
         $direction_id = $this->request->query('direction_id');
         $step_id = $this->request->query('step_id');
         $destination_spot_id = $this->request->query('destination_spot_id');
@@ -52,19 +51,34 @@ class LikeController extends AppController
                                 'lng' => $lng,
                                 'name' => $this->request->data['name'],
                                 'description' => $this->request->data['description'],
-                                'category_id' => $this->request->data['category_id']
+                                'category_id' => $this->request->data['category_id'],
+                                'manage_flag' => 0
                             )
                         )
                     )
                     ) {
-                        $file_name = $Spots->getLastInsertID() . ".jpg";
-                        rename("img/machitan_pic/" . $_FILES["picture"]["name"], "img/machitan_pic/" . $file_name);
-                        chmod("img/machitan_pic/" . $file_name, 0664);
+                        $dir_name = $Spots->getLastInsertID();
+                        $file_name = $dir_name . "_" . uniqid()  . ".jpg";
+                        mkdir("img/machitan_pic/".$dir_name);
+                        rename("img/machitan_pic/" . $_FILES["picture"]["name"], "img/machitan_pic/". $dir_name . "/" . $file_name);
+                        chmod("img/machitan_pic/" .$dir_name . "/" . $file_name, 0664);
                         echo $_FILES["picture"]["name"] . "をアップロードしました。";
                         $this->Session->setFlash('スポットが登録されました！', 'default', array('class' => 'alert alert-success'));
-                        $this->redirect('/play?direction_id=' . $direction_id . "&step_id=" . ($step_id) . "&destination_spot_id=" . $destination_spot_id);
+                        //$this->redirect('/play?direction_id=' . $direction_id . "&step_id=" . ($step_id) . "&destination_spot_id=" . $destination_spot_id);
 
                     }
+                    
+                    //canvasデータがPOSTで送信されてきた場合
+                    $canvas = $this->request->data('reseizedImage');
+                    //ヘッダに「data:image/png;base64,」が付いているので、それは外す
+                    $canvas = preg_replace("/data:[^,]+,/i","",$canvas);
+                    //残りのデータはbase64エンコードされているので、デコードする
+                    $canvas = base64_decode($canvas);
+                    //まだ文字列の状態なので、画像リソース化
+                    $image = imagecreatefromstring($canvas);
+                    //画像として保存（ディレクトリは任意）
+                    imagepng($image ,'img/machitan_pic/resizetest.png');
+                    
                 } else {
                     //ファイルのアップロードの失敗
                     $this->Session->setFlash('ファイルをアップロードできません。', 'default', array('class' => 'alert alert-success'));

@@ -1,8 +1,8 @@
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
 <script type="text/javascript">
     var directionsDisplay;
-var directionsService = new google.maps.DirectionsService();
-var map;
+    var directionsService = new google.maps.DirectionsService();
+    var map;
 
 function initialize() {
   directionsDisplay = new google.maps.DirectionsRenderer();
@@ -57,31 +57,6 @@ function calcRoute() {
     google.maps.event.addDomListener(window, 'load', initialize);
 
     $(document).ready(function () {
-        // simple jRating call
-        $(".basic").jRating();
-
-        // more complex jRating call
-        $(".basic").jRating({
-            step: true,
-            length: 20, // nb of stars
-            onSuccess: function () {
-                alert('Success : your rate has been saved :)');
-            }
-        });
-
-        // you can rate 3 times ! After, jRating will be disabled
-        $(".basic").jRating({
-            canRateAgain: true,
-            nbRates: 3
-        });
-
-        // get the clicked rate !
-        $(".basic").jRating({
-            onClick: function (element, rate) {
-                alert(rate);
-            }
-        });
-        
         setTimeout(function(){calcRoute()},500);
     
     });
@@ -96,12 +71,18 @@ function calcRoute() {
         
         alert(mapHight);
         $('div#map-canvas').attr('width', 100);
-       */ 
+       */
     }
     
+    var showedAlert = false;
     $(window).on('load resize', function(){
         var w = $(window).width() * 0.9;
         $('div#map-canvas').attr('width', w);
+        
+        if(!showedAlert){
+            sweetAlert("ゴールに到着しました！", "おめでとうございます！ツアーの結果を確認しましょう！", "success");
+            showedAlert = true;
+        }
     });
     
 </script>
@@ -113,6 +94,25 @@ function calcRoute() {
                <div id="map-canvas" style="height:400px;"></div>
         </div>
     </div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-info" id="about-info">
+            <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　今回のぶらりスコア</div>
+            <div class="panel-body" style="text-align:center">
+            <h3><?php echo $direction_score;?></h3>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="panel panel-info" id="about-info">
+            <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　今回の総移動距離</div>
+            <div class="panel-body" style="text-align:center">
+            <h3><?php echo $total_distance;?>m</h3>
+            </div>
+        </div>
+    </div>
+</div>
 
     <!--
     <div class="panel panel-info" id="about-info">

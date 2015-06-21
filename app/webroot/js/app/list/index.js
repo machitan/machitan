@@ -12,10 +12,15 @@ $(function(){
 	  			lng = pos.coords.longitude;
 	  	},
 	  	// 位置情報取得失敗時
+      // 兼六園の座標を設定
 	  	function (pos){
-        alert("GPSをOnにしてください");
+    		lat = 36.562127;
+	  		lng = 136.662458;
+        sweetAlert("GPSをOnにしてください");
       });
 	} else {
+	  lat = 36.562127;
+	  lng = 136.662458;
     alert("GPSをOnにしてください");
   }
 

@@ -14,6 +14,16 @@ class DirectionsJson {
     public $steps;
 
     /**
+     * @var トータルの距離情報
+     */
+    public $total_distance;
+
+    /**
+     * @var トータルの時間情報
+     */
+    public $total_duration;
+
+    /**
      * @var APIからの戻り値のオリジナルJSON
      */
     private $_original_directions_json;
@@ -52,12 +62,19 @@ class DirectionsJson {
         $steps = array();
         $step_count = 0; // 何ステップ目か
         $way_point_count = 0; // 何経由地目か
+        $current_distance = 0; // 現在何m 進んだか
+        $total_distance = 0; // トータルの距離
+        $total_duration = 0; // トータルの時間
 
         foreach ($directions->routes[0]->legs as $key => $leg) {
 
             // 経由地の位置情報
             $end_lat = $leg->end_location->lat;
             $end_lng = $leg->end_location->lng;
+
+            // トータルの情報を更新
+            $total_distance += $leg->distance->value;
+            $total_duration += $leg->duration->value;
 
             foreach ($leg->steps as $i) {
 
@@ -66,6 +83,11 @@ class DirectionsJson {
 
                 // 何経由地目かを付与
                 $i->way_point_count = $way_point_count;
+
+                // 何m進んだかを付与
+                $i->current_distance = $current_distance;
+                // 距離を更新
+                $current_distance += $i->distance->value;
 
                 // ラストステップ情報を初期化
                 $i->is_last = false;
@@ -86,6 +108,9 @@ class DirectionsJson {
 
         // パースしたステップ情報を保存
         $this->steps = $steps;
+
+        $this->total_distance = $total_distance;
+        $this->total_duration = $total_duration;
     }
 
     /**

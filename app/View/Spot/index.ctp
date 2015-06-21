@@ -1,3 +1,10 @@
+<script type="text/javascript" charset="utf-8">
+$(window).load(function () {
+        $('.flexslider').flexslider();
+        });
+</script>
+<script src="/js/app/spot/index.js"></script>
+
 <div class="container">
 
     <div id="spot-name">
@@ -13,16 +20,28 @@
         <div id="spot-name">
             <div class="panel panel-info" id="about-info">
                 <div class="panel-heading"><span class="glyphicon glyphicon-camera"></span>　スポットの写真</div>
-                <div class="panel-body">
+                <div class="flexslider">
+                    <ul class="slides">
                     <?php 
-                    if(file_exists('/opt/web/app/webroot/img/machitan_pic/'.$spot_info[0]['Spot']['id'].'.jpg')){
-        $imagefile = "../img/machitan_pic/".$spot_info[0]['Spot']['id'].".jpg";
-}
-    else{
-        $imagefile = "../img/no-image-1.jpg";
-    }
+                    if(file_exists('/opt/web/app/webroot/img/machitan_pic/'.$spot_info[0]['Spot']['id'])){
+                        exec("ls img/machitan_pic/" . $spot_info[0]['Spot']['id'] , $files);
+                        for ($i = 0; $i < count($files); $i++){
                     ?>
-                    <img src="<?php echo $imagefile ?>" style="width:100%">
+                    <li data-thumb="img/machitan_pic/<?php echo $spot_info[0]['Spot']['id']?>/<?php echo $files[$i] ?>">
+                    <img id="banner-left" border="0" src="img/machitan_pic/<?php echo $spot_info[0]['Spot']['id']?>/<?php echo $files[$i] ?>" style="width:100%">
+                    </li>
+                    <?php
+                    }
+                    }
+                    else{
+                        $files = array("../img/no-image-1.jpg");
+                    ?>
+                     <li>
+                        <img id="banner-left" border="0" src="<?php echo $files[0] ?>" style="width:100%">
+                    </li>
+                    <?php
+                    } ?>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -65,12 +84,28 @@
             </div>
         </div>
     </div>
-    
+    <div id="spot_image">
+        <form method="post" enctype="multipart/form-data" action="spot/add_image" id="add">
+            <div class="panel panel-info" id="about-info">
+                <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　あなたの撮ったスポットの写真を追加</div>
+                    <div class="panel-body">
+                        <img id="image" width="100%">
+                        <input type="file" accept="image/*;capture=camera" id="imageFile" name="picture"/>
+                    </div>
+                    <p>
+                    <input type="submit" value="登録" class="btn btn-primary btn-block btn-lg">
+                    </p>
+                    <input type="hidden" name="spot_id" value="<?php echo $spot_id?>">
+                    <input type="hidden" name="direction_id" value="<?php echo $direction_id?>">
+                </div>
+            </div>
+        </form>
+    </div>
     <div class="container">
         <row>
             <div class="row">
                 <div class="col-md-6 col-xs-6">
-                    <form action="spot/like" method="get">
+                    <form id="like_form" action="spot/like" method="get">
                         <input type="hidden" name="direction_id" value="<?php echo $direction_id ?>" />
                         <input type="hidden" name="step_id" value="<?php echo $step_id ?>" />
                         <input type="hidden" name="spot_id" value="<?php echo $spot_id ?>" />
@@ -89,6 +124,7 @@
             <input type="hidden" name="direction_id" value="<?php echo $direction_id ?>" />
             <input type="hidden" name="step_id" value="<?php echo $step_id ?>" />
             <input type="hidden" name="destination_spot_id" value="<?php echo $destination_spot_id ?>" />
+            <input type="hidden" name="previous_spot_id" value="<?php echo $spot_id ?>" />
             <input type="submit" class="btn btn-info btn-lg" value="次のスポット" style="width:100%;" />
         </form>
         <br>
@@ -126,6 +162,6 @@
                     </div>
                 </form>
             </div>
-        </div>
-    </div>
+            </div>
+            </div>
 </div>

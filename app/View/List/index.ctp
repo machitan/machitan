@@ -1,5 +1,4 @@
 <!-- <script src="/js/app/list/index.js"></script> -->
-<div class="container">
     <?php if($num_of_spots > 0){?>
     <br>
     <div style="text-align:center;">
@@ -17,7 +16,7 @@
     </div>
     <br>
 <div class="panel panel-info" id="about-info">
-        <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　行きたいところも選んでぶらりする</div>
+        <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　行きたいところを選んでぶらりする</div>
         <div class="panel-body">
 
     <!--<h4>行きたいところも選んでぶらりする</h4>-->
@@ -31,6 +30,8 @@
         </li>
         <li><a href="#tab4" data-toggle="tab"><span class="glyphicon glyphicon-heart"></span> その他</a>
         </li>
+        <li><a href="#tab5" data-toggle="tab"><span class="glyphicon glyphicon-flag"></span> ツアー</a>
+        </li>
     </ul>
     <!--タブコンテンツ-->
   <div id="myTabContent" class="tab-content">
@@ -42,61 +43,44 @@
     <div class="tab-pane fade" id="tab<?php echo $i ?>">
   	<?php }?>
         <ul class="list-group">
-  	<?php 
+  	<?php
       $count = 0;
       while($num_of_spots > $count){
-          ?>
+    ?>
          <?php if($spots[$count]['Spot']['category_id'] == $i){ ?>
   	    <li class="list-group-item">
             <!--   <a href="play?destination_spot_id=<?php echo $spots[$count]['Spot']['id'] ?>&lat=<?php echo $lat ?>&lng=<?php echo $lng?>">
                   <?php echo $spots[$count]['Spot']['name'] ?>
               </a> -->
-            <a style="width:100%;"  data-toggle="modal" data-target="#Modal<?php echo $spots[$count]['Spot']['id'] ?>"><?php echo $spots[$count]['Spot']['name'] ?></a>
+            <button class="btn btn-default" style="width:100%;"  data-toggle="modal" data-target="#Modal<?php echo $spots[$count]['Spot']['id'] ?>"><?php echo $spots[$count]['Spot']['name']?>
+              <span class="badge badge-info" style="left:10px"> <span class="glyphicon glyphicon-thumbs-up"></span> <?php  echo $spots[$count]['Spot']['like_num'] ?></span></button>
   	    </li>
         <?php } ?>
-  	<?php 
+  	<?php
           $count++;
       };
           ?>
   	</ul>
     </div>
   <?php } ?>
-
+  <!--ツアータブコンテンツ-->
+  <div class="tab-pane fade" id="tab5">
+    <ul class="list-group">
+	<?php
+    $count = 0;
+    while($num_of_tours > $count){
+    ?>
+    <li class="list-group-item">
+    <button class="btn btn-default" style="width:100%;"  data-toggle="modal" data-target="#TourModal<?php echo $tours[$count]['Tour']['id'] ?>"><?php echo $tours[$count]['Tour']['name']?></button>
+    </li>
+	<?php
+        $count++;
+    };
+        ?>
+	</ul>
   </div>
-<!--
-    <div id="myTabContent" class="tab-content">
-        <div class="tab-pane fade in active" id="tab1">
-            <ul class="list-group">
-                <li class="list-group-item"><a href="play">居酒屋 くまもん</a>
-                </li>
-                <li class="list-group-item"><a href="play">レストラン KUMA</a>
-                </li>
-                <li class="list-group-item"><a href="play">お食事処 熊</a>
-                </li>
-            </ul>
-        </div>
-        <div class="tab-pane fade" id="tab2">
-            <ul class="list-group">
-                <li class="list-group-item"><a href="play">カラオケ KUMAX</a>
-                </li>
-                <li class="list-group-item"><a href="play">ゲームセンター KUUMA</a>
-                </li>
-            </ul>
-        </div>
-        <div class="tab-pane fade" id="tab3">
-            <ul class="list-group">
-                <li class="list-group-item"><a href="play">雑貨 くまちゃん</a>
-                </li>
-                <li class="list-group-item"><a href="play">Kuman Kuman</a>
-                </li>
-                <li class="list-group-item"><a href="play">KUMA CA ISM</a>
-                </li>
-                <li class="list-group-item"><a href="play">服飾屋 くまー</a>
-                </li>
-            </ul>
-        </div>
-    </div>
--->
+  </div>
+     
 </div>
         </div>
     </div>
@@ -110,15 +94,13 @@
                 </button>
                 <h3 class="modal-title" id="myModalLabel">とりあえずぶらりする</h3>
                 <br>
-                <p>まちたん！がおすすめするお散歩ルートでぶらりしましょう</p>
-                <p>まちたん！が選ぶ目的地に行くまでに寄り道してもいいよ、って方は「寄り道あり」を選択してください。</p>
             </div>
             <div class="modal-body">
+                <p>まちたん！がおすすめするお散歩ルートでぶらりしましょう</p>
                 <form action="/play" method="get">
                     <!-- input -->
                     <div class="form-group">
-                        <input type="radio" name="waypoints_onoff" value=on checked>寄り道をする
-                        <input type="radio" name="waypoints_onoff" value=off>寄り道をしない
+                        <input type="hidden" name="waypoints_onoff" value=on>
                         <input type="hidden" name="destination_spot_id" value="<?php echo $rand_spot_id ?>">
                         <input type="hidden" name="lat" value="<?php echo $lat ?>">
                         <input type="hidden" name="lng" value="<?php echo $lng ?>">
@@ -128,7 +110,7 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal">
                             キャンセル
                         </button>
-                        <input type="submit" value="ぶらりする"></input>
+                        <input type="submit" class="btn btn-primary" value="ぶらりする"></input>
                     </div>
                 </form>
             </div>
@@ -136,16 +118,19 @@
     </div>
 </div>
 
-<?php 
+
+<?php
+// Spot Modal作成
 $count = 0;
 while($num_of_spots > $count){
-    if(file_exists('/opt/web/app/webroot/img/machitan_pic/'.$spots[$count]['Spot']['id'].'.jpg')){
-        $imagefile = "../img/machitan_pic/".$spots[$count]['Spot']['id'].".jpg";
-    }else{
-        $imagefile = "../img/no-image-1.jpg";
-    }
-    
-    $this->List->getModal($spots[$count]['Spot']['name'],$spots[$count]['Spot']['id'],$spots[$count]['Spot']['description'],$lat,$lng,$imagefile, $spots[$count]['Spot']['like_num']);
+    $this->List->getModal($spots[$count]['Spot']['name'],$spots[$count]['Spot']['id'],$spots[$count]['Spot']['description'],$lat,$lng,$spots[$count]['Spot']['like_num']);
+    $count++;
+};
+
+// Tour Modal作成
+$count = 0;
+while($num_of_tours > $count){
+    $this->List->getTourModal($tours[$count]['Tour']['name'],$tours[$count]['Tour']['id'],$tours[$count]['Tour']['description'],$tours[$count]['tour_spot_rels']['spot_id'],$lat,$lng);
     $count++;
 };
 ?>
