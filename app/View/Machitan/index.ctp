@@ -1,5 +1,5 @@
 <script src="/js/app/list/index.js"></script>
-<div class="jumbotron" style="background-image:url('../img/machitan_pic/top/1.jpg'); background-position: center center; background-size:cover;">
+<div class="jumbotron" style="background-image:url('../img/top/1.jpg'); background-position: center center; background-size:cover;">
     <div class="container">
         <div class="row">
             <div class="col-md-6">
