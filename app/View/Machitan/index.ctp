@@ -8,7 +8,7 @@
             <div class="col-md-6" style="background: rgba(0,0,0,.6);">
                 <div style="color: #fff; text-shadow: 2px 2px 8px rgba(0,0,0,1); ">
                     <br>
-                    <h2>散歩して健康増進してみませんか？</h2>
+                    <h2>散歩して健康増進してみませんか？？</h2>
                     <br>
                     <br>
                     <!--

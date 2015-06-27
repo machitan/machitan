@@ -86,16 +86,16 @@
             <div class="flexslider">
                 <ul class="slides">
                     <li>
-                        <img id="banner-left" border="0" src="http://maps.googleapis.com/maps/api/streetview?size=640x300&location=<?php echo $step->end_location->lat ?>,<?php echo $step->end_location->lng ?>8&fov=120&pitch=0&heading=0&sensor=false&key=AIzaSyDE_HtWXSjaSvlmyQvNcYpr3WFpSe2C68Y">
+                        <img id="banner-left" border="0" src="http://maps.googleapis.com/maps/api/streetview?size=640x300&location=<?php echo $step->end_location->lat ?>,<?php echo $step->end_location->lng ?>8&fov=120&pitch=0&heading=0&sensor=false&key=<?php echo $google_api_key ?>">
                     </li>
                     <li>
-                        <img id="banner-left" border="0" src="http://maps.googleapis.com/maps/api/streetview?size=640x300&location=<?php echo $step->end_location->lat ?>,<?php echo $step->end_location->lng ?>8&fov=120&pitch=0&heading=90&sensor=false&key=AIzaSyDE_HtWXSjaSvlmyQvNcYpr3WFpSe2C68Y">
+                        <img id="banner-left" border="0" src="http://maps.googleapis.com/maps/api/streetview?size=640x300&location=<?php echo $step->end_location->lat ?>,<?php echo $step->end_location->lng ?>8&fov=120&pitch=0&heading=90&sensor=false&key=<?php echo $google_api_key ?>">
                     </li>
                     <li>
-                        <img id="banner-left" border="0" src="http://maps.googleapis.com/maps/api/streetview?size=640x300&location=<?php echo $step->end_location->lat ?>,<?php echo $step->end_location->lng ?>8&fov=120&pitch=0&heading=180&sensor=false&key=AIzaSyDE_HtWXSjaSvlmyQvNcYpr3WFpSe2C68Y">
+                        <img id="banner-left" border="0" src="http://maps.googleapis.com/maps/api/streetview?size=640x300&location=<?php echo $step->end_location->lat ?>,<?php echo $step->end_location->lng ?>8&fov=120&pitch=0&heading=180&sensor=false&key=<?php echo $google_api_key ?>">
                     </li>
                     <li>
-                        <img id="banner-left" border="0" src="http://maps.googleapis.com/maps/api/streetview?size=640x300&location=<?php echo $step->end_location->lat ?>,<?php echo $step->end_location->lng ?>8&fov=120&pitch=0&heading=270&sensor=false&key=AIzaSyDE_HtWXSjaSvlmyQvNcYpr3WFpSe2C68Y">
+                        <img id="banner-left" border="0" src="http://maps.googleapis.com/maps/api/streetview?size=640x300&location=<?php echo $step->end_location->lat ?>,<?php echo $step->end_location->lng ?>8&fov=120&pitch=0&heading=270&sensor=false&key=<?php echo $google_api_key ?>">
                     </li>
                 </ul>
             </div>

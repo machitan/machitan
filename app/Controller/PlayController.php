@@ -14,6 +14,8 @@ class PlayController extends Controller
 
     public function index()
     {
+        $this->set('google_api_key','AIzaSyAxGdNmlCsgZAPqhWTBE1gP0_R9yFC5iIs');
+
         /*
          * パラメータの取得
          */
