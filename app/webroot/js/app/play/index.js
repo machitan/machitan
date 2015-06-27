@@ -90,7 +90,7 @@ app.params = app.params || {};
         from = new google.maps.LatLng(app.params.start_location.lat, app.params.start_location.lng);
         to = new google.maps.LatLng(app.params.end_location.lat, app.params.end_location.lng);
         heading = google.maps.geometry.spherical.computeHeading(from, to);
-        img = "http://maps.googleapis.com/maps/api/streetview?size=640x300&location=" + app.params.start_location.lat + ',' + app.params.start_location.lng + "8&fov=120&pitch=0&heading="+heading+"&sensor=false&key=AIzaSyDE_HtWXSjaSvlmyQvNcYpr3WFpSe2C68Y";
+        img = "http://maps.googleapis.com/maps/api/streetview?size=640x300&location=" + app.params.start_location.lat + ',' + app.params.start_location.lng + "8&fov=120&pitch=0&heading="+heading+"&sensor=false&key=AIzaSyAxGdNmlCsgZAPqhWTBE1gP0_R9yFC5iIs";
         document.getElementById("direction").src = img;
     }
     
