@@ -62,7 +62,7 @@ class ListController extends AppController
 			array(
 				'joins' => $joins,
 				'alias' => 'Tour',
-				'fields' => Array('Tour.id', 'Tour.name', 'Tour.description','tour_spot_rels.spot_id'),
+				'fields' => Array('Tour.id', 'Tour.name', 'Tour.description', 'tour_spot_rels.spot_id'),
 				'conditions' => array(
 					'and' => array(
 						array('lat BETWEEN ? AND ?' =>
