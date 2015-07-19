@@ -46,6 +46,21 @@ class SpotController extends AppController
 
 	public function like()
 	{
+		      if($this->request->is('ajax')) {
+            $Spot = ClassRegistry::init('Spot');
+            $spot_id = $this->request->data('spot_id');
+            $like_count = $this->request->data('like_count');
+
+            $Spot->id = $spot_id;
+            $Spot->save(
+                array(
+                    'Spot' => array(
+                        'like_num' => $like_count
+                    )
+                )
+            );
+        }
+        /*
 		$direction_id = $this->request->query('direction_id');
 		$step_id = $this->request->query('step_id');
 		$spot_id = $this->request->query('spot_id');
@@ -67,9 +82,10 @@ class SpotController extends AppController
 		if ($Spot->save($data, false, $fields)) {
 			$this->redirect('/spot?direction_id=' . $direction_id . "&step_id=" . ($step_id) . "&spot_id=" . $spot_id . "&destination_spot_id=" . $destination_spot_id);
 		} else {
-		}
+		}*/
 
 	}
+
 	public function add_image(){
 		$direction_id = $this->request->data('direction_id');
 		$spot_id = $this->request->data('spot_id');

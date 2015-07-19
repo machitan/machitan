@@ -1,7 +1,39 @@
 <script type="text/javascript" charset="utf-8">
-$(window).load(function () {
+    var liked = false;
+    $(window).load(function () {
+        liked = false;
+
         $('.flexslider').flexslider();
+
+        $("#like-button").click(function(){
+            if(!liked){
+                like();
+                liked = true;
+            }else{
+                sweetAlert("いいね！できませんでした", "いいね！は一度しかできません", "error");
+            }
         });
+
+        function like() {
+            $.ajax({
+                type: "POST",
+                url: "/spot/like",
+                data:{
+                    spot_id:<?php echo $spot_id?>,
+                    like_count:<?php echo $spot_info[0]['Spot']['like_num'] + 1?>,
+                },
+                scriptCharset: 'utf-8',
+                success: function (data) {
+                    $("#like_count").text(<?php echo $spot_info[0]['Spot']['like_num'] + 1?>);
+                    sweetAlert("いいね！しました！","いいね！の数が<?php echo $spot_info[0]['Spot']['like_num'] + 1?>になりました！","success");
+                },
+                error: function () {
+                    sweetAlert("いいね！できませんでした", "管理者に連絡してください", "error");
+                }
+            });
+            return true;
+        }
+    });
 </script>
 <script src="/js/app/spot/index.js"></script>
 
@@ -22,7 +54,7 @@ $(window).load(function () {
                 <div class="panel-heading"><span class="glyphicon glyphicon-camera"></span>　スポットの写真</div>
                 <div class="flexslider">
                     <ul class="slides">
-                    <?php 
+                    <?php
                     if(file_exists('/opt/web/app/webroot/img/machitan_pic/'.$spot_info[0]['Spot']['id'])){
                         exec("ls img/machitan_pic/" . $spot_info[0]['Spot']['id'] , $files);
                         for ($i = 0; $i < count($files); $i++){
@@ -64,7 +96,7 @@ $(window).load(function () {
         <div class="panel panel-info" id="about-info">
             <div class="panel-heading"><span class="glyphicon glyphicon-thumbs-up"></span>　いいね！の数</div>
             <div class="panel-body" style="text-align:center">
-                <h3><?php echo $spot_info[0]['Spot']['like_num']?></h3>
+                <h3 id="like_count"><?php echo $spot_info[0]['Spot']['like_num']?></h3>
             </div>
         </div>
     </div>
@@ -106,14 +138,17 @@ $(window).load(function () {
             <div class="row">
                 <div class="col-md-6 col-xs-6">
                     <form id="like_form" action="spot/like" method="get">
+                        <!--
                         <input type="hidden" name="direction_id" value="<?php echo $direction_id ?>" />
                         <input type="hidden" name="step_id" value="<?php echo $step_id ?>" />
                         <input type="hidden" name="spot_id" value="<?php echo $spot_id ?>" />
                         <input type="hidden" name="destination_spot_id" value="<?php echo $destination_spot_id ?>" />
                         <input type="submit" class="btn btn-info btn-lg" value="いいね！" style="width:100%;" />
+                        -->
+                        <p id="like-button" type="submit" class="btn btn-info btn-lg" value="いいね！" style="width:100%;" >いいね！</p>
                     </form>
                 </div>
- 
+
                 <div class="col-md-6 col-xs-6">
                     <button class="btn btn-info btn-lg" style="width:100%;"  data-toggle="modal" data-target="#myModal">コメントする</button>
                 </div>
