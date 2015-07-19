@@ -3,9 +3,15 @@
     var directionsDisplay;
     var directionsService = new google.maps.DirectionsService();
     var map;
+    var stepDisplay;
+    var markerArray = [];
 
 function initialize() {
-  directionsDisplay = new google.maps.DirectionsRenderer();
+  var renderOptions = {
+    map:map,
+    suppressMarkers: true 
+  }
+  directionsDisplay = new google.maps.DirectionsRenderer(renderOptions);
   var center = new google.maps.LatLng(35.5643,139.654);
   var mapOptions = {
     zoom: 9,
@@ -13,6 +19,7 @@ function initialize() {
   }
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
   directionsDisplay.setMap(map);
+  stepDisplay = new google.maps.InfoWindow();
 }
 
 function calcRoute() {
@@ -38,6 +45,7 @@ function calcRoute() {
   directionsService.route(request, function(response, status) {
     if (status == google.maps.DirectionsStatus.OK) {
       directionsDisplay.setDirections(response);
+      showSteps(response);
       /*
         var route = response.routes[0];
       var summaryPanel = document.getElementById('directions_panel');
@@ -53,6 +61,38 @@ function calcRoute() {
     }
   });
  }
+
+function showSteps(directionResult){
+  var myRoute = directionResult.routes[0];
+  for (var i = 0; i < myRoute.legs.length; i++) {
+    var icon = "https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=" + i + "|FF0000|000000";
+    if (i == 0) {
+      icon = "https://chart.googleapis.com/chart?chst=d_map_pin_icon&chld=home|FF0000|000000"
+    }
+    var marker = new google.maps.Marker({
+      position: myRoute.legs[i].steps[0].start_point, 
+      map: map,
+      icon: icon
+    });
+    attachInstructionText(marker, myRoute.legs[i].steps[0].instructions);
+    markerArray.push(marker);
+  }
+  var laststep = myRoute.legs[myRoute.legs.length - 1].steps.length;
+  var marker = new google.maps.Marker({
+    position: myRoute.legs[myRoute.legs.length - 1].steps[laststep-1].end_point, 
+    map: map,
+    icon: "https://chart.googleapis.com/chart?chst=d_map_pin_icon&chld=flag|ADDE63"
+  });
+  markerArray.push(marker);
+  google.maps.event.trigger(markerArray[0], "click");
+}
+
+function attachInstructionText(marker, text) {
+  google.maps.event.addListener(marker, 'click', function() {
+    stepDisplay.setContent(text);
+    stepDisplay.open(map, marker);
+  });
+}
 
     google.maps.event.addDomListener(window, 'load', initialize);
 
