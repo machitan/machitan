@@ -2,7 +2,7 @@
 
 class PlayController extends Controller
 {
-    
+
 
 	/**
 	 * 経由地とスポットを同一とみなす距離
@@ -26,11 +26,11 @@ class PlayController extends Controller
 		$waypoint_onoff = $this->request->query('waypoints_onoff'); // 経由地の有無
 		$step_id = $this->request->query('step_id'); // Step
 		$tour_id = $this->request->query('tour_id'); // ツアーが選択された場合は、tour_idが渡される
-        
+
 		//初回遷移時、step_idに初期値0をセット
 		if($step_id == null)
 			$step_id = 0;
-        
+
 		// 初回遷移時
 		if ($direction_id == null) {
 			if ($tour_id != null) {
@@ -42,6 +42,20 @@ class PlayController extends Controller
 				// ランダムにルートを決定し保存する
 				$direction_id = $this->__findDirection($lat, $lng, $destination_spot_id, $waypoint_onoff);
 			}
+      $Spot = ClassRegistry::init('Spot');
+      $Spot->id = $destination_spot_id;
+      $played_count = $Spot->find('all', array(
+        'conditions' => array('id' => $destination_spot_id),
+        'fields' => array('played')
+      ))[0]['Spot']['played'] + 1;
+      $this->set('played_count',$played_count);
+      $Spot->save(
+          array(
+              'Spot' => array(
+                  'played' => $played_count
+              )
+          )
+      );
 		} else if ($direction_id == -1) {
 			// ListからLikeに遷移していた場合はTop画面へ遷移
 			$this->redirect('/');
@@ -57,7 +71,7 @@ class PlayController extends Controller
 		// 経路JSONオブジェクトを生成する
 		App::uses('DirectionsJson', 'Lib');
 		$directions_json = new DirectionsJson($directions['Directions']['directions_json']);
-        
+
 		if($step_id < count($directions_json->steps)){
 			//step情報と次のstep情報をセット
 			$step = $directions_json->steps[$step_id];
@@ -66,7 +80,7 @@ class PlayController extends Controller
 		else{
 			$step = null;
 		}
-        
+
 		//次のstepがある場合（ゴールでない場合）
 		if($step != null) {
 			$this->set('step', $step);
@@ -78,19 +92,19 @@ class PlayController extends Controller
 			$this->set('total_distance', $directions_json->total_distance);
 			$this->set('total_duration', $directions_json->total_duration);
 			$this->set('current_progress', (int)(($step->current_distance/$directions_json->total_distance)*100));
-            
+
 			//ゴールに到着した場合
 			if($step->is_last){
 				// ゴール画面に遷移
 				$this->redirect('/spot?spot_id=' . $destination_spot_id . '&direction_id=' . $direction_id);
 			}
-            
+
 			// 経由地に到着した場合
 			if ($step->is_way_point) {
 				// Stepに対応するSpotを取得
 				$spot = $this->__getStepSpot($directions, $step);
 				$this->set('spot',$spot);
-                
+
 				// Spot画面に遷移
 				//$this->redirect('/spot?direction_id=' . $direction_id . "&step_id=" . ($step_id + 1) . "&spot_id=" . $spot['id'] . "&destination_spot_id=" . $destination_spot_id);
 			}else{
@@ -245,7 +259,7 @@ class PlayController extends Controller
 		}
 
 		return $new_direction_id;
-    
+
 	}
 
 	/**
@@ -260,7 +274,7 @@ class PlayController extends Controller
 			'tour_id' => $tour_id,
 			'goal_flag' => 1
 		)));
-        
+
 		return $tourSpotRel['Spot']['id'];
 	}
 

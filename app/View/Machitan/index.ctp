@@ -30,7 +30,7 @@
         <br>
         <div style="text-align:center;">
             <div style="color: #fff; text-shadow: 2px 2px 8px rgba(0,0,0,1); ">
-            <?php 
+            <?php
                 if($geo_info != null){
                 echo "<h3>現在地が取得できませんでした。もう一度ボタンをタッチしてください</h3>";
             } ?>
@@ -38,4 +38,33 @@
             </div>
         </div>
     </div>
+</div>
+<div class="jumbotron">
+  <h3>スポットプレイランキング（全国版）</h3>
+  <div class="list-group" id="candidate_spots">
+        <?php for($i = 0; $i < count($spot_ranking_all); $i++){ ?>
+          <div class="list-group-item">
+            <div class="row-action-primary">
+              <?php
+                if(file_exists('img/machitan_pic/' . $spot_ranking_all[$i]['Spot']['id'] . '/'. $spot_ranking_all[$i]['Spot']['id'] . '.jpg')){
+                  $image_src = 'img/machitan_pic/' . $spot_ranking_all[$i]['Spot']['id'] . '/'. $spot_ranking_all[$i]['Spot']['id'] . '.jpg';
+                }else{
+                  $image_src = '../img/no-image-1.jpg';
+                };
+              ?>
+              <img class="circle" src="<?php echo $image_src?>" alt="icon">
+            </div>
+            <div class="row-content">
+              <div class="least-content">
+                <span class="badge badge-info" style="left:10px">
+                  <span class="glyphicon glyphicon-thumbs-up"></span><?php echo ' '.$spot_ranking_all[$i]['Spot']['like_num']?>
+                </span>
+              </div>
+              <h3 class="list-group-item-heading"><?php echo $spot_ranking_all[$i]['Spot']['name'] ?></h3>
+              <p class="list-group-item-text">プレイ回数：<?php echo $spot_ranking_all[$i]['Spot']['played'] ?></p>
+            </div>
+            <div class="list-group-separator"></div>
+          </div>
+        <?php }?>
+  </div>
 </div>

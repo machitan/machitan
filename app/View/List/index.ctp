@@ -7,7 +7,7 @@
         </div>
 <?php }
 }?>
-   
+
 
    <!-- <script src="/js/app/list/index.js"></script> -->
     <?php if($num_of_spots > 0){?>
@@ -15,7 +15,7 @@
     <div style="text-align:center;">
     <!--    <a href="play?spot_id=<?php echo $rand_spot_id ?>&lat=<?php echo $lat ?>&lng=<?php echo $lng?>" class="btn btn-info btn-lg" style="width:100%;">とりあえずぶらりする</a> -->
     <button class="btn btn-info btn-lg" style="width:100%;"  data-toggle="modal" data-target="#myModal">とりあえずぶらりする</button>
-        
+
     </div>
     <br>
     <?php }else{?>
@@ -26,6 +26,27 @@
         <a href="like?first=true" class="btn btn-info btn-lg" style="width:100%;">ナイススポット発見！</a>
     </div>
     <br>
+    <div class="panel panel-info" id="about-info">
+      <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　スポットプレイランキング</div>
+      <div class="panel-body">
+        <ul class="list-group">
+        <?php
+          for($i = 0; $i < count($spot_ranking); $i++){
+        ?>
+            <li class="list-group-item">
+              <button class="btn btn-default" style="width:100%;"  data-toggle="modal" data-target="#Modal<?php echo $spot_ranking[$i]['Spot']['id'] ?>"><?php echo $spot_ranking[$i]['Spot']['name']?>
+                  <span class="badge badge-info" style="left:10px">
+                      <span class="mdi-maps-directions-walk"></span> <?php  echo $spot_ranking[$i]['Spot']['played'] ?>
+                  </span>
+                  <span class="badge badge-info" style="left:10px">
+                      <span class="mdi-action-thumb-up"></span> <?php  echo $spot_ranking[$i]['Spot']['like_num'] ?>
+                  </span>
+              </button>
+          </li>
+        <?php };?>
+        </ul>
+      </div>
+    </div>
 <div class="panel panel-info" id="about-info">
         <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　行きたいところを選んでぶらりする</div>
         <div class="panel-body">
@@ -48,13 +69,13 @@
   <div id="myTabContent" class="tab-content">
 
   <?php for ($i = 1; $i <= 4 ; $i++){?>
-   
+
     <?php if($i == 1){ ?>
         <div class="tab-pane fade in active" id="tab<?php echo $i ?>">
   	<?php }else{ ?>
         <div class="tab-pane fade" id="tab<?php echo $i ?>">
   	<?php }?>
-    
+
     <ul class="list-group">
   	<?php
       $existsItem = false;
@@ -63,8 +84,11 @@
     <?php if($spots[$count]['Spot']['category_id'] == $i){ ?>
         <li class="list-group-item">
             <button class="btn btn-default" style="width:100%;"  data-toggle="modal" data-target="#Modal<?php echo $spots[$count]['Spot']['id'] ?>"><?php echo $spots[$count]['Spot']['name']?>
+              <span class="badge badge-info" style="left:10px">
+                  <span class="mdi-maps-directions-walk"></span> <?php  echo $spots[$count]['Spot']['played'] ?>
+              </span>
                 <span class="badge badge-info" style="left:10px">
-                    <span class="glyphicon glyphicon-thumbs-up"></span> <?php  echo $spots[$count]['Spot']['like_num'] ?>
+                    <span class="mdi-action-thumb-up"></span> <?php  echo $spots[$count]['Spot']['like_num'] ?>
                 </span>
             </button>
   	    </li>
@@ -84,7 +108,7 @@
   	</ul>
     </div>
   <?php } ?>
-  
+
   <!--ツアータブコンテンツ-->
   <div class="tab-pane fade" id="tab5">
     <ul class="list-group">
@@ -102,7 +126,7 @@
 	</ul>
   </div>
   </div>
-     
+
 </div>
         </div>
     </div>
