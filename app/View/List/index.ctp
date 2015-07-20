@@ -7,7 +7,7 @@
         </div>
 <?php }
 }?>
-   
+
 
    <!-- <script src="/js/app/list/index.js"></script> -->
     <?php if($num_of_spots > 0){?>
@@ -15,7 +15,7 @@
     <div style="text-align:center;">
     <!--    <a href="play?spot_id=<?php echo $rand_spot_id ?>&lat=<?php echo $lat ?>&lng=<?php echo $lng?>" class="btn btn-info btn-lg" style="width:100%;">とりあえずぶらりする</a> -->
     <button class="btn btn-info btn-lg" style="width:100%;"  data-toggle="modal" data-target="#myModal">とりあえずぶらりする</button>
-        
+
     </div>
     <br>
     <?php }else{?>
@@ -23,7 +23,7 @@
     <h3>近くにスポットがありません。</h3>
     <?php }?>
     <div style="text-align:center;">
-        <a href="like?first=true" class="btn btn-info btn-lg" style="width:100%;">ナイススポット発見！</a>
+        <a href="like?first=true" class="btn btn-warning btn-fab btn-raised mdi-communication-location-on" style="position:absolute;bottom:15px;right:15px;"></a>
     </div>
     <br>
 <div class="panel panel-info" id="about-info">
@@ -48,13 +48,13 @@
   <div id="myTabContent" class="tab-content">
 
   <?php for ($i = 1; $i <= 4 ; $i++){?>
-   
+
     <?php if($i == 1){ ?>
         <div class="tab-pane fade in active" id="tab<?php echo $i ?>">
   	<?php }else{ ?>
         <div class="tab-pane fade" id="tab<?php echo $i ?>">
   	<?php }?>
-    
+
     <ul class="list-group">
   	<?php
       $existsItem = false;
@@ -84,7 +84,7 @@
   	</ul>
     </div>
   <?php } ?>
-  
+
   <!--ツアータブコンテンツ-->
   <div class="tab-pane fade" id="tab5">
     <ul class="list-group">
@@ -102,7 +102,7 @@
 	</ul>
   </div>
   </div>
-     
+
 </div>
         </div>
     </div>
