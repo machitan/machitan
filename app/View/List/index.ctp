@@ -1,4 +1,15 @@
-<!-- <script src="/js/app/list/index.js"></script> -->
+<?php if(count($events) > 0){
+    for($i = 0; $i < count($events); $i++){ ?>
+        <div class="jumbotron">
+            <h3><?php echo $events[$i]['Event']['name']?></h3>
+            <p><?php echo $events[$i]['Event']['description']?></p>
+            <p><a class="btn btn-primary btn-lg" href="#">このイベントに参加する！</a></p>
+        </div>
+<?php }
+}?>
+   
+
+   <!-- <script src="/js/app/list/index.js"></script> -->
     <?php if($num_of_spots > 0){?>
     <br>
     <div style="text-align:center;">

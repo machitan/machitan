@@ -86,5 +86,19 @@ class ListController extends AppController
 		} else {
 
 		}
+        
+        $Event = ClassRegistry::init('Event');
+        $events = $Event->find('all',
+			array(
+				'fields' => Array('id', 'name', 'description'),
+				'conditions' => array(
+					'and' => array(
+						array('startdate <="' . date("Y-m-d H:i:s") . '"'),
+                        array('enddate >="' . date("Y-m-d H:i:s") . '"')
+					)
+				)
+			));
+        $this->set('events', $events);
+        
 	}
 }
