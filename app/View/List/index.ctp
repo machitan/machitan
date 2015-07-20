@@ -37,32 +37,43 @@
   <div id="myTabContent" class="tab-content">
 
   <?php for ($i = 1; $i <= 4 ; $i++){?>
+   
     <?php if($i == 1){ ?>
-    <div class="tab-pane fade in active" id="tab<?php echo $i ?>">
+        <div class="tab-pane fade in active" id="tab<?php echo $i ?>">
   	<?php }else{ ?>
-    <div class="tab-pane fade" id="tab<?php echo $i ?>">
+        <div class="tab-pane fade" id="tab<?php echo $i ?>">
   	<?php }?>
-        <ul class="list-group">
+    
+    <ul class="list-group">
   	<?php
-      $count = 0;
-      while($num_of_spots > $count){
+      $existsItem = false;
+      for($count = 0; $num_of_spots > $count ; $count++){
     ?>
-         <?php if($spots[$count]['Spot']['category_id'] == $i){ ?>
-  	    <li class="list-group-item">
-            <!--   <a href="play?destination_spot_id=<?php echo $spots[$count]['Spot']['id'] ?>&lat=<?php echo $lat ?>&lng=<?php echo $lng?>">
-                  <?php echo $spots[$count]['Spot']['name'] ?>
-              </a> -->
+    <?php if($spots[$count]['Spot']['category_id'] == $i){ ?>
+        <li class="list-group-item">
             <button class="btn btn-default" style="width:100%;"  data-toggle="modal" data-target="#Modal<?php echo $spots[$count]['Spot']['id'] ?>"><?php echo $spots[$count]['Spot']['name']?>
-              <span class="badge badge-info" style="left:10px"> <span class="glyphicon glyphicon-thumbs-up"></span> <?php  echo $spots[$count]['Spot']['like_num'] ?></span></button>
+                <span class="badge badge-info" style="left:10px">
+                    <span class="glyphicon glyphicon-thumbs-up"></span> <?php  echo $spots[$count]['Spot']['like_num'] ?>
+                </span>
+            </button>
   	    </li>
-        <?php } ?>
-  	<?php
-          $count++;
-      };
-          ?>
+    <?php
+            $existsItem = true;
+        }
+        ?>
+    <?php };
+        if(!$existsItem){
+    ?>
+        <li class="list-group-item">
+            <button class="btn btn-default" style="width:100%;">
+            <span class="mdi-action-report-problem"></span>付近にこのカテゴリのスポットはありません<span class="mdi-action-report-problem"></span>
+            </button>
+        </li>
+    <?php } ?>
   	</ul>
     </div>
   <?php } ?>
+  
   <!--ツアータブコンテンツ-->
   <div class="tab-pane fade" id="tab5">
     <ul class="list-group">
