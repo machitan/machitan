@@ -26,6 +26,27 @@
         <a href="like?first=true" class="btn btn-warning btn-fab btn-raised mdi-communication-location-on" style="position:absolute;bottom:15px;right:15px;"></a>
     </div>
     <br>
+    <div class="panel panel-info" id="about-info">
+      <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　スポットプレイランキング</div>
+      <div class="panel-body">
+        <ul class="list-group">
+        <?php
+          for($i = 0; $i < count($spot_ranking); $i++){
+        ?>
+            <li class="list-group-item">
+              <button class="btn btn-default" style="width:100%;"  data-toggle="modal" data-target="#Modal<?php echo $spot_ranking[$i]['Spot']['id'] ?>"><?php echo $spot_ranking[$i]['Spot']['name']?>
+                  <span class="badge badge-info" style="left:10px">
+                      <span class="mdi-maps-directions-walk"></span> <?php  echo $spot_ranking[$i]['Spot']['played'] ?>
+                  </span>
+                  <span class="badge badge-info" style="left:10px">
+                      <span class="mdi-action-thumb-up"></span> <?php  echo $spot_ranking[$i]['Spot']['like_num'] ?>
+                  </span>
+              </button>
+          </li>
+        <?php };?>
+        </ul>
+      </div>
+    </div>
 <div class="panel panel-info" id="about-info">
         <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　行きたいところを選んでぶらりする</div>
         <div class="panel-body">
@@ -63,8 +84,11 @@
     <?php if($spots[$count]['Spot']['category_id'] == $i){ ?>
         <li class="list-group-item">
             <button class="btn btn-default" style="width:100%;"  data-toggle="modal" data-target="#Modal<?php echo $spots[$count]['Spot']['id'] ?>"><?php echo $spots[$count]['Spot']['name']?>
+              <span class="badge badge-info" style="left:10px">
+                  <span class="mdi-maps-directions-walk"></span> <?php  echo $spots[$count]['Spot']['played'] ?>
+              </span>
                 <span class="badge badge-info" style="left:10px">
-                    <span class="glyphicon glyphicon-thumbs-up"></span> <?php  echo $spots[$count]['Spot']['like_num'] ?>
+                    <span class="mdi-action-thumb-up"></span> <?php  echo $spots[$count]['Spot']['like_num'] ?>
                 </span>
             </button>
   	    </li>
