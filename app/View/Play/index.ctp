@@ -5,7 +5,7 @@
 
     /**
     * PHP -> JS への値の受け渡し
-    */ 
+    */
     app.params.direction_id = <?php echo($direction_id)?>;
     app.params.total_distance = <?php echo $total_distance; ?>;
     app.params.total_duration = <?php echo $total_duration; ?>;
@@ -100,12 +100,12 @@
                 </ul>
             </div>
         </div>
-        
+
         <!-- 次のスポットの方角を向いた写真 -->
         <div class="tab-pane fade" id="tab2">
             <img id="direction" border="0" class="img-thumbnail" style="width:100%;">
         </div>
-        
+
         <!-- 次のスポット情報 -->
         <div class="tab-pane fade" id="tab3">
            <div id="map-canvas" style="height:300px;"></div>
@@ -119,6 +119,7 @@
         <input type="hidden" name="step_id" value="<?php echo $step_id ?>" />
         <input type="hidden" name="destination_spot_id" value="<?php echo $destination_spot_id ?>" />
         <input type="hidden" name="spot_id" value="<?php echo $spot['id'] ?>" />
+        <input type="hidden" name="tour_id" value="<?php echo $tour_id ?>" />
         <input type="submit" class="btn btn-info btn-lg goalbutton" value="スポット到着！" style="width:100%;" onClick="return isGoal('スポット')"/>
     </form>
     <?php   } else {?>
@@ -129,9 +130,10 @@
         <input type="hidden" name="direction_id" value="<?php echo $direction_id ?>" />
         <input type="hidden" name="step_id" value="<?php echo $step_id ?>" />
         <input type="hidden" name="destination_spot_id" value="<?php echo $destination_spot_id ?>" />
-        
+        <input type="hidden" name="tour_id" value="<?php echo $tour_id ?>" />
+
         <!-- ここでゴール到着の判定がうまくいってない　高橋 -->
-        
+
         <?php if ($step->is_last) { ?>
             <input type="submit" class="btn btn-info btn-lg goalbutton" value="ゴール到着！" style="width:100%;" onClick="return isGoal('ゴール')"/>
         <!--<?php //} else if ($step && $step->is_way_point) { ?>

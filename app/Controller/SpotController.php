@@ -12,11 +12,13 @@ class SpotController extends AppController
 		$spot_id = $this->request->query('spot_id');
 		$destination_spot_id = $this->request->query('destination_spot_id');
 		$comment_body = $this->request->query('comment_body');
+		$tour_id = $this->request->query('tour_id');
 
 		$this->set('direction_id', $direction_id);
 		$this->set('step_id', $step_id);
 		$this->set('spot_id', $spot_id);
 		$this->set('destination_spot_id', $destination_spot_id);
+		$this->set('tour_id', $tour_id);
 
 		$Spot = ClassRegistry::init('Spot');
 		$spot_info = $Spot->find('all',
