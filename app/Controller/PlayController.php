@@ -38,6 +38,31 @@ class PlayController extends Controller
 				$direction_id = $this->__findTourDirection($lat, $lng, $tour_id);
 				// 目的地に、ツアーのゴールをセットする
 				$destination_spot_id = $this->__getTourGoalSpotId($tour_id);
+
+				//ツアーのプレイ回数をインクリメントする
+				$Tour = ClassRegistry::init('Tour');
+				$tour_info = $Tour->find('all', array(
+					'conditions' => array('id' => $tour_id),
+					'fields' => array('played_finished','played')
+				));
+
+				$tour_played_finished_count = $tour_info[0]['Tour']['played_finished'];
+				$tour_played_count = $tour_info[0]['Tour']['played'] + 1;
+				if($tour_played_count != 0){
+					$tour_finised_rate = $tour_played_finished_count/$tour_played_count * 100;
+				}else{
+					$tour_finised_rate = 0;
+				}
+
+				$Tour->id = $tour_id;
+				$Tour->save(
+						array(
+								'Tour' => array(
+										'played' => $tour_played_count,
+										'finished_rate' => $tour_finised_rate
+								)
+						)
+				);
 			} else {
 				// ランダムにルートを決定し保存する
 				$direction_id = $this->__findDirection($lat, $lng, $destination_spot_id, $waypoint_onoff);
@@ -61,7 +86,7 @@ class PlayController extends Controller
 			$this->redirect('/');
 		} else if ($direction_id != null && $step_id == '') {
 			//ゴールSpotからの遷移時はEvalへリダイレクト
-			$this->redirect('/eval?direction_id=' . $direction_id);
+			$this->redirect('/eval?direction_id=' . $direction_id  . '&tour_id=' . $tour_id);
 		}
 
 		// 経路JSONの取得
@@ -92,11 +117,12 @@ class PlayController extends Controller
 			$this->set('total_distance', $directions_json->total_distance);
 			$this->set('total_duration', $directions_json->total_duration);
 			$this->set('current_progress', (int)(($step->current_distance/$directions_json->total_distance)*100));
+			$this->set('tour_id', $tour_id);
 
 			//ゴールに到着した場合
 			if($step->is_last){
 				// ゴール画面に遷移
-				$this->redirect('/spot?spot_id=' . $destination_spot_id . '&direction_id=' . $direction_id);
+				$this->redirect('/spot?spot_id=' . $destination_spot_id . '&direction_id=' . $direction_id . '&tour_id=' . $tour_id);
 			}
 
 			// 経由地に到着した場合
@@ -114,7 +140,7 @@ class PlayController extends Controller
 		//次のstepがない場合（ゴールである場合）
 		else{
 			// ゴール画面に遷移
-			$this->redirect('/spot?spot_id=' . $destination_spot_id . '&direction_id=' . $direction_id);
+			$this->redirect('/spot?spot_id=' . $destination_spot_id . '&direction_id=' . $direction_id . '&tour_id=' . $tour_id);
 		}
 
 		// プレイ画面用テンプレート

@@ -160,6 +160,7 @@
             <input type="hidden" name="step_id" value="<?php echo $step_id ?>" />
             <input type="hidden" name="destination_spot_id" value="<?php echo $destination_spot_id ?>" />
             <input type="hidden" name="previous_spot_id" value="<?php echo $spot_id ?>" />
+            <input type="hidden" name="tour_id" value="<?php echo $tour_id ?>" />
             <input type="submit" class="btn btn-info btn-lg" value="次のスポット" style="width:100%;" />
         </form>
         <br>

@@ -12,18 +12,18 @@ class EvalController extends AppController
 		$direction_id = $this->request->query('direction_id');
 		$this->set('direction_id', $direction_id);
 		// 経路JSONの取得
-        
+
 		$directions = $this->Directions->find('first', array(
 			'conditions' => array('id' => $direction_id)
 		));
 		// 経路JSONのオブジェクトを作成する
 		App::uses('DirectionsJson','Lib');
 		$directions_json = new DirectionsJson($directions['Directions']['directions_json']);
-        
+
 		$Directions = ClassRegistry::init('Directions');
 		$direction_json = $Directions->find('all', array('conditions' => array('id' => $direction_id)));
 		$d_json = json_decode($direction_json[0]['Directions']['directions_json'], true);
-        
+
 		$this->set('direction_json', json_decode($direction_json[0]['Directions']['directions_json'], true));
 		$this->set('direction_json_raw', $direction_json[0]['Directions']['directions_json']);
 		$this->set('total_distance',$directions_json->total_distance);
@@ -42,10 +42,10 @@ class EvalController extends AppController
 		else{
 			$this->set('direction_score', $direction_json[0]['Directions']['score']);
 		}
-        
+
 		$this->set('start_lat', $d_json['routes'][0]['legs'][0]['start_location']['lat']);
 		$this->set('start_lng', $d_json['routes'][0]['legs'][0]['start_location']['lng']);
-        
+
 
 		$num_of_spots = count($d_json['routes'][0]['legs']);
 
@@ -59,22 +59,48 @@ class EvalController extends AppController
 		$this->set('end_lat', $d_json['routes'][0]['legs'][$num_of_spots - 1]['end_location']['lat']);
 		$this->set('end_lng', $d_json['routes'][0]['legs'][$num_of_spots - 1]['end_location']['lng']);
 
+		$tour_id = $this->request->query('tour_id');
+		if ($tour_id != null) {
+			//ツアーのプレイ回数をインクリメントする
+			$Tour = ClassRegistry::init('Tour');
+			$tour_info = $Tour->find('all', array(
+				'conditions' => array('id' => $tour_id),
+				'fields' => array('played_finished','played')
+			));
 
+			$tour_played_finished_count = $tour_info[0]['Tour']['played_finished'] + 1;
+			$tour_played_count = $tour_info[0]['Tour']['played'];
+			if($tour_played_count != 0){
+				$tour_finised_rate = $tour_played_finished_count/$tour_played_count * 100;
+			}else{
+				$tour_finised_rate = 0;
+			}
+
+			$Tour->id = $tour_id;
+			$Tour->save(
+					array(
+							'Tour' => array(
+									'played_finished' => $tour_played_finished_count,
+									'finished_rate' => $tour_finised_rate
+							)
+					)
+			);
+		}
 		/*
         $DirectionSpotRels = ClassRegistry::init('DirectionSpotRels');
         $dsr_spots = $DirectionSpotRels->find('all',
                                               array('conditions' => array(
-                                                  'direction_id' => $direction_id)));   
-        
+                                                  'direction_id' => $direction_id)));
+
         $this->set('dsr_spots',$dsr_spots);
-        
+
         $num_of_spots = count($dsr_spots);
 
         if($num_of_spots > 0){
-        
+
             $Spot = ClassRegistry::init('Spot');
             $spots_gpss = array();
-            
+
             $count = 0;
             while($num_of_spots > $count){
                 $spots_gps = $Spot->find('all',

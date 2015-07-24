@@ -39,32 +39,78 @@
         </div>
     </div>
 </div>
-<div class="jumbotron">
-  <h3>スポットプレイランキング（全国版）</h3>
-  <div class="list-group" id="candidate_spots">
-        <?php for($i = 0; $i < count($spot_ranking_all); $i++){ ?>
-          <div class="list-group-item">
-            <div class="row-action-primary">
-              <?php
-                if(file_exists('img/machitan_pic/' . $spot_ranking_all[$i]['Spot']['id'] . '/'. $spot_ranking_all[$i]['Spot']['id'] . '.jpg')){
-                  $image_src = 'img/machitan_pic/' . $spot_ranking_all[$i]['Spot']['id'] . '/'. $spot_ranking_all[$i]['Spot']['id'] . '.jpg';
-                }else{
-                  $image_src = '../img/no-image-1.jpg';
-                };
-              ?>
-              <img class="circle" src="<?php echo $image_src?>" alt="icon">
-            </div>
-            <div class="row-content">
-              <div class="least-content">
-                <span class="badge badge-info" style="left:10px">
-                  <span class="glyphicon glyphicon-thumbs-up"></span><?php echo ' '.$spot_ranking_all[$i]['Spot']['like_num']?>
-                </span>
-              </div>
-              <h3 class="list-group-item-heading"><?php echo $spot_ranking_all[$i]['Spot']['name'] ?></h3>
-              <p class="list-group-item-text">プレイ回数：<?php echo $spot_ranking_all[$i]['Spot']['played'] ?></p>
-            </div>
-            <div class="list-group-separator"></div>
-          </div>
-        <?php }?>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="jumbotron">
+        <h3>スポットプレイランキング（全国版）</h3>
+        <div class="list-group" id="candidate_spots">
+              <?php for($i = 0; $i < count($spot_ranking_all); $i++){ ?>
+                <div class="list-group-item">
+                  <div class="row-action-primary">
+                    <?php
+                      if(file_exists('img/machitan_pic/' . $spot_ranking_all[$i]['Spot']['id'] . '/'. $spot_ranking_all[$i]['Spot']['id'] . '.jpg')){
+                        $image_src = 'img/machitan_pic/' . $spot_ranking_all[$i]['Spot']['id'] . '/'. $spot_ranking_all[$i]['Spot']['id'] . '.jpg';
+                      }else{
+                        $image_src = '../img/no-image-1.jpg';
+                      };
+                    ?>
+                    <img class="circle" src="<?php echo $image_src?>" alt="icon">
+                  </div>
+                  <div class="row-content">
+                    <div class="least-content">
+                      <span class="badge badge-info" style="left:10px">
+                        <span class="glyphicon glyphicon-thumbs-up"></span><?php echo ' '.$spot_ranking_all[$i]['Spot']['like_num']?>
+                      </span>
+                    </div>
+                    <h3 class="list-group-item-heading"><?php echo $spot_ranking_all[$i]['Spot']['name'] ?></h3>
+                    <p class="list-group-item-text">プレイ回数：<?php echo $spot_ranking_all[$i]['Spot']['played'] ?></p>
+                  </div>
+                  <div class="list-group-separator"></div>
+                </div>
+              <?php }?>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="jumbotron">
+        <h3>ツアープレイランキング（全国版）</h3>
+        <div class="list-group" id="candidate_spots">
+              <?php for($i = 0; $i < count($tour_ranking_all); $i++){ ?>
+                <div class="list-group-item">
+                  <div class="row-action-primary">
+                    <?php
+                      for($k = 0; $k < count($tour_ranking_all_image); $k++){
+                        if($tour_ranking_all_image[$k]['TourSpotRel']['tour_id'] == $tour_ranking_all[$i]['Tour']['id']){
+                          exec("ls img/machitan_pic/" . $tour_ranking_all_image[$k]['TourSpotRel']['spot_id'] , $files);
+                          if(file_exists('img/machitan_pic/' . $tour_ranking_all_image[$k]['TourSpotRel']['spot_id'] . '/'. $files[0])){
+                            $image_src = 'img/machitan_pic/' . $tour_ranking_all_image[$k]['TourSpotRel']['spot_id'] . '/'. $files[0];
+                          }else{
+                              $image_src = '../img/no-image-1.jpg';
+                          };
+                        }else{
+                            $image_src = '../img/no-image-1.jpg';
+                        };
+                      }
+                    ?>
+                    <img class="circle" src="<?php echo $image_src?>" alt="icon">
+                  </div>
+                  <div class="row-content">
+                    <!--
+                    <div class="least-content">
+                      <span class="badge badge-info" style="left:10px">
+                        <span class="glyphicon glyphicon-thumbs-up"></span><?php //echo ' '.$spot_ranking_all[$i]['Spot']['like_num']?>
+                      </span>
+                    </div>
+                    -->
+                    <h3 class="list-group-item-heading"><?php echo $tour_ranking_all[$i]['Tour']['name'] ?></h3>
+                    <p class="list-group-item-text">ツアー人気度：<?php echo $tour_ranking_all[$i]['Tour']['finished_rate'] ?></p>
+                  </div>
+                  <div class="list-group-separator"></div>
+                </div>
+              <?php }?>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
