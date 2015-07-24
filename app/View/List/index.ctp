@@ -23,7 +23,7 @@
     <h3>近くにスポットがありません。</h3>
     <?php }?>
     <div style="text-align:center;">
-        <a href="like?first=true" class="btn btn-warning btn-fab btn-raised mdi-communication-location-on" style="position:absolute;bottom:15px;right:15px;"></a>
+        <a href="like?first=true" class="btn btn-warning btn-fab btn-raised mdi-communication-location-on" style="position:absolute;bottom:15px;right:15px;z-index: 5"></a>
     </div>
     <br>
     <div class="panel panel-info" id="about-info">
