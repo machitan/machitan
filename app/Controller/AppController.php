@@ -33,7 +33,27 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller
 {
 
-    public $components = array('DebugKit.Toolbar', 'RequestHandler');
+    public $components = array(
+            'DebugKit.Toolbar', 
+            'RequestHandler', 
+            'Session',
+            'Auth' => array(
+                'loginRedirect' => array(
+                    'controller' => 'posts',
+                    'action' => 'index'
+                    ),
+                'logoutRedirect' => array(
+                    'controller' => 'pages',
+                    'action' => 'display',
+                    'home'
+                    ),
+                'authenticate' => array(
+                    'Form' => array(
+                        'passwordHasher' => 'Blowfish'
+                        )
+                    )
+                )
+            );
 
     /**
      * Maintenance configuration
@@ -48,4 +68,8 @@ class AppController extends Controller
                                  'users' => array('*')) // allowed action when maintanance status
     ));
     */
+
+    public function beforeFilter() {
+#        $this->Auth->allow('index', 'view');
+    }
 }
