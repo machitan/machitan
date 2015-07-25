@@ -44,13 +44,8 @@ class MachitanController extends Controller
 		));
 		$this->set('tour_ranking_all_image',$tour_ranking_all_image);
 
-
-
 		$geo_info = $this->request->query('geo_info');
 		$this->set('geo_info', $this->request->query('geo_info'));
-		if($geo_info != null){
-			sweetAlert("現在地が取得できませんでした","しばらくしてから、もう一度ボタンをタッチしてください");
-		}
 	}
 
 }
