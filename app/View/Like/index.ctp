@@ -24,13 +24,13 @@ function resizeImageFile(file) {
   var side = $("#selSide").val();
   //var length = $("#numLength").val();
   var length = 240;
-    
-  //$("#imgResizer").attr("src", "img/loading.gif");
+
+  $("#imgResizer").attr("src", "img/loading.gif");
 
   resizeByOneSideLength(file, "Resizer", side, length, function (data) {
     console.log("resized! by Resizer");
     $("#imgResizer").attr("src", data);
-      
+
     $("#reseizedImage").attr("value", data);
   });
 
@@ -40,7 +40,7 @@ function resizeImageFile(file) {
 function resizeByOneSideLength(file, method, mode, length, callback) {
     loadImage(file, function (img) {
         var mode ="longest";
-        
+
         //calc new width and height
         var ow = img.width;
         var oh = img.height;
@@ -125,7 +125,7 @@ function loadImage(file, callback) {
         <h4>あなたの見つけたお気に入りのスポットを登録しよう！</h4>
     </div>
     <br>
-    
+
     <form method="post" enctype="multipart/form-data" action="like/add" id="add">
         <div class="panel panel-info" id="about-info">
             <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　あなたの撮ったまちの写真（必須）</div>
