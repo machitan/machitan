@@ -49,14 +49,14 @@ $time_newest = time();
             echo $this->fetch('css');
             echo $this->fetch('script');
         ?>
-       
+
         <script src="/js/jquery.rateyo.min.js"></script>
         <style src="/css/jquery.rateyo.min.css"></style>
-        
+
         <script src="/js/jquery.flexslider.js"></script>
 
         <style async src="/css/cake.generic"></style>
-       
+
         <script src="/js/bootstrap.min.js"></script>
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -77,7 +77,7 @@ $time_newest = time();
         <link href="/css/material-css/ripples.min.css" rel="stylesheet">
         <script src="/js/ripples.min.js"></script>
         <script src="/js/material.min.js"></script>
-        
+
         <style>
         #map-canvas {
             height: 100%;
@@ -85,14 +85,14 @@ $time_newest = time();
             padding: 0px
         }
         </style>
-        
+
         <script>
             $(document).ready(function() {
                 // This command is used to initialize some elements and make them work properly
                 $.material.init();
             });
         </script>
-        
+
         <!--  sweetalert -->
         <script src="/js/sweetalert.min.js"></script>
         <link rel="stylesheet" type="text/css" href="/css/sweetalert.css">
@@ -113,10 +113,17 @@ $time_newest = time();
                       </button>
                       <a class="navbar-brand" href="/?top=">まちたん！</a>
                     </div>
-                    <!--div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <?php if(!isset($this->Session->read('Auth')['User']['id'])){?>
+                          <li><a href="/users/login?from=nav">ログイン</a></li>
+                        <?php }else{?>
+                          <li><a href="/users/logout?from=nav">ログアウト</a></li>
+                        <?php }?>
+                    </ul>
+                      <!--div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                       <ul class="nav navbar-nav"></ul>
                       <p class="navbar-text navbar-right"><a href="#" class="navbar-link">news</a></p>
-                    </div-->
+                      </div-->
                 </div>
             </nav>
         </div>
