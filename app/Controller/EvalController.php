@@ -19,6 +19,9 @@ class EvalController extends AppController
 		// 経路JSONのオブジェクトを作成する
 		App::uses('DirectionsJson','Lib');
 		$directions_json = new DirectionsJson($directions['Directions']['directions_json']);
+        
+        // ユーザ情報取得
+        $user = $this->Auth->user();
 
 		$Directions = ClassRegistry::init('Directions');
 		$direction_json = $Directions->find('all', array('conditions' => array('id' => $direction_id)));
@@ -85,8 +88,32 @@ class EvalController extends AppController
 							)
 					)
 			);
+            
+
 		}
-		/*
+        
+        //ユーザのゲームプレイ履歴更新
+        if($user != null){
+            //実行したプレイ履歴登録
+            $user_game_history = ClassRegistry::init('UserGameHistory');
+            $score = $direction_json[0]['Directions']['score'];
+            if($score < 0){
+                $score = 0;
+            }
+            $user_game_history->save(
+                    array(
+                        'UserGameHistory' => array(
+                            'user_id' => $user['id'],
+                            'direction_id' => $direction_id,
+                            'tour_id' => $tour_id,
+                            'score' => $score,
+                            'distance' => $directions_json->total_distance
+                            )
+                        )
+                    );
+        }
+
+	/*
         $DirectionSpotRels = ClassRegistry::init('DirectionSpotRels');
         $dsr_spots = $DirectionSpotRels->find('all',
                                               array('conditions' => array(
