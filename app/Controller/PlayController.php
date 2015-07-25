@@ -450,22 +450,12 @@ class PlayController extends Controller
 	{
 		$spot_ids = null;
 
-		// 現在地付近のツアーの取得
-		$tour = $this->__findTour($lat, $lng);
+        // 現在地付近のスポットをランダムで返す
+        $spots = $this->__getRandomSpots($lat, $lng);
 
-		if ($tour) {
-			// ツアーがある場合は、ツアーに含まれるスポットを返す
-			$spot_ids = array_map(function ($tour_spot_rel) {
-				return $tour_spot_rel['spot_id'];
-			}, $tour['TourSpotRels']);
-		} else {
-			// ツアーがない場合は、現在地付近のスポットをランダムで返す
-			$spots = $this->__getRandomSpots($lat, $lng);
-
-			$spot_ids = array_map(function ($spot) {
-				return $spot['Spots']['id'];
-			}, $spots);
-		}
+        $spot_ids = array_map(function ($spot) {
+                return $spot['Spots']['id'];
+                }, $spots);
 
 		return $spot_ids;
 
