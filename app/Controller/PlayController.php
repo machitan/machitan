@@ -380,7 +380,8 @@ class PlayController extends Controller
 
 		//API結果判定 20km以上はなれている場合はlistへリダイレクト
 		$res_json = json_decode($res);
-		if (str_replace(" km", "", $res_json->routes[0]->legs[0]->distance->text) >= 20) {
+		if ( strstr($res_json->routes[0]->legs[0]->distance->text,"km") && 
+             str_replace(" km", "", $res_json->routes[0]->legs[0]->distance->text) >= 20 ) {
 			$this->redirect('/list');
 		}
 
