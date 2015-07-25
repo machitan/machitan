@@ -55,7 +55,7 @@
                 <div class="flexslider">
                     <ul class="slides">
                     <?php
-                    if(file_exists('/opt/web/app/webroot/img/machitan_pic/'.$spot_info[0]['Spot']['id'])){
+                    if(file_exists('img/machitan_pic/'.$spot_info[0]['Spot']['id'])){
                         exec("ls img/machitan_pic/" . $spot_info[0]['Spot']['id'] , $files);
                         for ($i = 0; $i < count($files); $i++){
                     ?>
