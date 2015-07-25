@@ -4,6 +4,12 @@ $(document).ready(function () {
   if(location.hash=="#logout"){
     sweetAlert('ログアウトしました');
   }
+  if(location.hash=="#addednewuser"){
+    sweetAlert('ユーザ登録に成功しました！','ログインして、まちたん！をお楽しみください！','success');
+  }
+  if(location.hash=="#failedtoadduser"){
+    sweetAlert('ユーザ登録に失敗しました','再度登録をお試しください','error');
+  }
 });
 </script>
 <div class="jumbotron" style="background-image:url('../img/top/1.jpg'); background-position: center center; background-size:cover;">
