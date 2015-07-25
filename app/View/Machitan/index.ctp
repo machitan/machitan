@@ -1,4 +1,11 @@
 <script src="/js/app/list/index.js"></script>
+<script>
+$(document).ready(function () {
+  if(location.hash=="#logout"){
+    sweetAlert('ログアウトしました');
+  }
+});
+</script>
 <div class="jumbotron" style="background-image:url('../img/top/1.jpg'); background-position: center center; background-size:cover;">
     <div class="container">
         <div class="row">
