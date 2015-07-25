@@ -21,5 +21,7 @@
         <button id="submit-button" type="submit" class="btn btn-primary" value="Login">ログイン</button>
       </div>
     </form>
+    <div class="list-group-separator"></div>
+    <a href="/users/add">ユーザ登録がお済みでない方はこちらからユーザ登録をしてください</a>
   </div>
 </div>
