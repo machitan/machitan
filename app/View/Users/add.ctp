@@ -30,15 +30,6 @@
                 <label class="control-label" for="UserPassword">パスワード</label>
                 <input class="form-control" name="data[User][password]" type="password" id="UserPassword" required="required" placeholder="Password" />
               </div>
-              <div class="form-group checkbox">
-                <label>
-                  <input id="term_check_box" type="checkbox" name="terms_check"> 利用規約に同意します。
-                </label>
-              </div>
-              <br>
-              <div class="form-group submit">
-                <button id="submit-button" type="submit" class="btn btn-primary" disabled>登録</button>
-              </div>
             </fieldset>
           </div>
         </div>
@@ -68,6 +59,21 @@
                 <label>
                   <input type="radio" name="speed_level" value="2"> はやめ
                 </label>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="container">
+            <fieldset>
+              <div class="form-group checkbox">
+                <label>
+                  <input id="term_check_box" type="checkbox" name="terms_check"> 利用規約に同意します。
+                </label>
+              </div>
+              <br>
+              <div class="form-group submit">
+                <button id="submit-button" type="submit" class="btn btn-primary" disabled>登録</button>
               </div>
             </fieldset>
           </div>
