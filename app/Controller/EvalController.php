@@ -19,7 +19,7 @@ class EvalController extends AppController
 		// 経路JSONのオブジェクトを作成する
 		App::uses('DirectionsJson','Lib');
 		$directions_json = new DirectionsJson($directions['Directions']['directions_json']);
-        
+
         // ユーザ情報取得
         $user = $this->Auth->user();
 
@@ -88,10 +88,10 @@ class EvalController extends AppController
 							)
 					)
 			);
-            
+
 
 		}
-        
+
         //ユーザのゲームプレイ履歴更新
         if($user != null){
             //実行したプレイ履歴登録
@@ -138,6 +138,63 @@ class EvalController extends AppController
             }
             $this->set('spots_gpss',$spots_gpss);
         }*/
+
+				/*消費カロリー計算*/
+				/*消費カロリー(Kcal) ＝ メッツ * 体重Kg * 運動時間 * 1.05*/
+				$age = $user['age'];
+				$height = $user['height'] / 100;		//m
+				$weight = $user['weight']; 					//kg
+				$speed_level = $user['walking_speed'];	//0=ゆっくり, 1=普通, 2=急いで
+
+				//歩行速度（m/min）を取得する
+				//歩行強度（$speed_level）と身長から基本速度を計算
+				//分間歩数を80歩として計算
+				//参考：http://www.training.co.jp/nf/mWWJJ.html
+				$walking_speed = 60;
+				if($speed_level == 0){
+					$walking_speed = $height * 0.37 * 80;
+				}else if($speed_level == 1){
+					$walking_speed = $height * 0.45 * 80;
+				}else if($speed_level == 2){
+					$walking_speed = $height * 0.5 * 80;
+				}
+				//年齢別の係数をかけて補正
+				//参考：http://www.mhlw.go.jp/shingi/2006/07/dl/s0725-9f-12.pdf
+				if($age < 30){
+					$walking_speed = $walking_speed * 1;
+				}else if($age < 40){
+					$walking_speed = $walking_speed * 0.96;
+				}else if($age < 50){
+					$walking_speed = $walking_speed * 0.91;
+				}else{
+					$walking_speed = $walking_speed * 0.87;
+				}
+				//推定した歩行速度をもとに運動強度（メッツ）を推定
+				//参考：http://keisan.casio.jp/has10/SpecExec.cgi?path=01100000.%8C%92%8DN%82%CC%8Cv%8EZ%2F02000100.%89%5E%93%AE%2F10200100.%83E%83H%81%5B%83L%83%93%83O%2Fdefault.xml
+				$mets = 2.8;
+				if($walking_speed < 53){
+					$mets = 2.8;
+				}else if($walking_speed < 67){
+					$mets = 3;
+				}else if($walking_speed < 80){
+					$mets = 3.5;
+				}else if($walking_speed < 93){
+					$mets = 4.3;
+				}else{
+					$mets = 5;
+				}
+
+				//歩行時間を、歩行速度とぶらりの総距離から計算
+				$walking_time = $directions_json->total_distance / $walking_speed /60; //hour
+
+				//運動強度、体重、歩行時間からカロリーを計算
+				$used_calories = $mets * $weight * $walking_time * 1.05;
+				$this->set('mets',$mets);
+				$this->set('weight',$weight);
+				$this->set('walking_time',$walking_time);
+				$this->set('walking_speed',$walking_speed);
+
+				$this->set('used_calories',round($used_calories,2));
 
 	}
 }
