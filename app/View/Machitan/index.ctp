@@ -62,11 +62,13 @@ $(document).ready(function () {
                 <div class="list-group-item">
                   <div class="row-action-primary">
                     <?php
-                      if(file_exists('img/machitan_pic/' . $spot_ranking_all[$i]['Spot']['id'] . '/'. $spot_ranking_all[$i]['Spot']['id'] . '.jpg')){
-                        $image_src = 'img/machitan_pic/' . $spot_ranking_all[$i]['Spot']['id'] . '/'. $spot_ranking_all[$i]['Spot']['id'] . '.jpg';
+                      exec("ls img/machitan_pic/" . $spot_ranking_all[$i]['Spot']['id'] , $files);
+                      if(file_exists('img/machitan_pic/' . $spot_ranking_all[$i]['Spot']['id'] . '/'. $files[0])){
+                        $image_src = 'img/machitan_pic/' . $spot_ranking_all[$i]['Spot']['id'] . '/'. $files[0];
                       }else{
                         $image_src = '../img/no-image-1.jpg';
                       };
+                      unset($files);
                     ?>
                     <img class="circle" src="<?php echo $image_src?>" alt="icon">
                   </div>
@@ -99,10 +101,10 @@ $(document).ready(function () {
                           if(file_exists('img/machitan_pic/' . $tour_ranking_all_image[$k]['TourSpotRel']['spot_id'] . '/'. $files[0])){
                             $image_src = 'img/machitan_pic/' . $tour_ranking_all_image[$k]['TourSpotRel']['spot_id'] . '/'. $files[0];
                           }else{
-                              $image_src = '../img/no-image-1.jpg';
+                            $image_src = '../img/no-image-1.jpg';
                           };
                         }else{
-                            $image_src = '../img/no-image-1.jpg';
+                          $image_src = '../img/no-image-1.jpg';
                         };
                       }
                     ?>
@@ -121,7 +123,9 @@ $(document).ready(function () {
                   </div>
                   <div class="list-group-separator"></div>
                 </div>
-              <?php }?>
+              <?php
+              unset($files);
+              }?>
         </div>
       </div>
     </div>
