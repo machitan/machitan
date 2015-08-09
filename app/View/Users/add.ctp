@@ -14,9 +14,9 @@
     <h3>まちたん！へようこそ！</h3>
     <p style="font-size:16px;">利用規約をお読みの上、同意いただける方は下記のチェックを入れて登録してください</p>
     <div class="row">
-      <div class="col-lg-6">
-        <div class="container">
-          <form action="/users/add" id="UserAddForm" method="post" accept-charset="utf-8" class="form-horizontal">
+      <form action="/users/add" id="UserAddForm" method="post" accept-charset="utf-8" class="form-horizontal">
+        <div class="col-lg-6">
+          <div class="container">
             <div style="display:none;">
               <input type="hidden" name="_method" value="POST" />
               <input type="hidden" name="data[User][role]" value="author" />
@@ -40,26 +40,39 @@
                 <button id="submit-button" type="submit" class="btn btn-primary" disabled>登録</button>
               </div>
             </fieldset>
-          </form>
-
+          </div>
         </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="container">
-          <h4>まちたん！にユーザ登録すると、こんないいことが！</h4>
-          <ul>
-            <li>
-              <p>メリット１</p>
-            </li>
-            <li>
-              <p>メリット２</p>
-            </li>
-            <li>
-              <p>メリット３</p>
-            </li>
-          </ul>
+        <div class="col-lg-6">
+          <div class="container">
+            <fieldset>
+              <div class="form-group required">
+                <label class="control-label" for="UserHeight">身長(cm)</label>
+                <input class="form-control" name="data[User][height]" maxlength="50" type="text" id="UserUsername" required="required" placeholder="height" />
+              </div>
+              <div class="input password required form-group">
+                <label class="control-label" for="UserWeight">体重(kg)</label>
+                <input class="form-control" name="data[User][weight]" type="text" id="UserPassword" required="required" placeholder="weight" />
+              </div>
+              <div class="input password required form-group">
+                <label class="control-label" for="UserAge">年齢</label>
+                <input class="form-control" name="data[User][age]" type="text" id="UserPassword" required="required" placeholder="age" />
+              </div>
+              <label class="control-label" for="UserWalkingSpeed">歩く速さ（主観で選んでください）</label>
+              <div class="form-group radio radio-primary required">
+                <label>
+                  <input type="radio" name="speed_level" value="0"> ゆっくり
+                </label>
+                <label>
+                  <input type="radio" name="speed_level" value="1" checked=""> ふつう
+                </label>
+                <label>
+                  <input type="radio" name="speed_level" value="2"> はやめ
+                </label>
+              </div>
+            </fieldset>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
   <div class="jumbotron">

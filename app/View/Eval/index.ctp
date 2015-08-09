@@ -153,7 +153,12 @@ function attachInstructionText(marker, text) {
         </div>
     </div>
 </div>
-
+  <div class="panel panel-info" id="about-info">
+      <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　消費カロリー</div>
+      <div class="panel-body" style="text-align:center">
+      <h3><?php echo $used_calories;?>kcal</h3>
+      </div>
+  </div>
     <!--
     <div class="panel panel-info" id="about-info">
         <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　今のお散歩コースはいかがでしたか？</div>
