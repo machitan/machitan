@@ -113,6 +113,7 @@ $time_newest = time();
                       </button>
                       <a class="navbar-brand" href="/?top=">まちたん！</a>
                     </div>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
                         <?php if(!isset($this->Session->read('Auth')['User']['id'])){?>
                           <li><a href="/users/login?from=nav">ログイン</a></li>
@@ -120,6 +121,7 @@ $time_newest = time();
                           <li><a href="/users/logout?from=nav">ログアウト</a></li>
                         <?php }?>
                     </ul>
+                  </div>
                       <!--div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                       <ul class="nav navbar-nav"></ul>
                       <p class="navbar-text navbar-right"><a href="#" class="navbar-link">news</a></p>
