@@ -27,13 +27,13 @@ function calcRoute() {
       echo "});";
       }
       ?>
-      
+
   var request = {
       origin: start,
       destination: end,
       waypoints: waypts,
       optimizeWaypoints: true,
-      travelMode: google.maps.TravelMode.DRIVING
+      travelMode: google.maps.TravelMode.WALKING
   };
   directionsService.route(request, function(response, status) {
     if (status == google.maps.DirectionsStatus.OK) {
@@ -59,13 +59,13 @@ function calcRoute() {
     $(document).ready(function () {
         setTimeout(function(){calcRoute()},500);
     });
-    
+
     $(window).on('load', function(){
         var w = $(window).width() * 0.9;
         $('div#map-canvas').attr('width', w);
         sweetAlert("ツアー登録が完了しました！", "登録したツアーの内容を確認して下さい", "success");
     });
-    
+
 </script>
 
 <div class="container">
@@ -76,14 +76,14 @@ function calcRoute() {
             <h3><?php echo $tour_name?></h3>
         </div>
     </div>
-    
+
     <div class="panel panel-info">
         <div class="panel-heading"><i class="mdi-maps-place"></i>　ツアー説明</div>
         <div class="panel-body">
             <h4><?php echo $tour_description?></h4>
         </div>
     </div>
-    
+
     <div class="panel panel-info">
         <div class="panel-heading"><i class="mdi-maps-place"></i>　登録したツアーのルート例</div>
         <div class="panel-body">
@@ -91,9 +91,9 @@ function calcRoute() {
             <div id="map-canvas" style="height:400px"></div>
             </div>
     </div>
-    
+
     <div style="text-align:center;">
         <a class="btn btn-info btn-lg" href="/manage/" style="width:100%;" id="add-button">管理画面トップへ戻る</a>
     </div>
-    
+
 </div>
