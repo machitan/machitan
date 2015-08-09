@@ -141,11 +141,17 @@ class EvalController extends AppController
 
 				/*消費カロリー計算*/
 				/*消費カロリー(Kcal) ＝ メッツ * 体重Kg * 運動時間 * 1.05*/
-				$age = $user['age'];
-				$height = $user['height'] / 100;		//m
-				$weight = $user['weight']; 					//kg
-				$speed_level = $user['walking_speed'];	//0=ゆっくり, 1=普通, 2=急いで
-
+				if($user != null){
+					$age = $user['age'];
+					$height = $user['height'] / 100;		//m
+					$weight = $user['weight']; 					//kg
+					$speed_level = $user['walking_speed'];	//0=ゆっくり, 1=普通, 2=急いで
+				}else {
+					$age = 30;				//デフォルト = 30才
+					$height = 1.7;		//デフォルト = 170cm
+					$weight = 60; 		//デフォルト = 60kg
+					$speed_level = 1;	//デフォルト = 1(=ふつう)
+				}
 				//歩行速度（m/min）を取得する
 				//歩行強度（$speed_level）と身長から基本速度を計算
 				//分間歩数を80歩として計算
