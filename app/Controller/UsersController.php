@@ -66,9 +66,22 @@ class UsersController extends AppController {
     public function login() {
         if ($this->request->is('post')) {
             if ($this->Auth->login()) {
-                $this->redirect($this->Auth->redirect());
+                if(strpos($this->request->data['loginfrom'], 'top', 0) === 0){
+                    $lat = $this->request->data('lat');
+            		$lng = $this->request->data('lng');
+
+                    $this->redirect('/list?geo_info=&lat='.$lat.'&lng='.$lng);
+            		//現在地が取得てきていなければ、トップにリダイレクト
+            		if (isset($lat) || isset($lng)) {
+            			$this->redirect('/?geo_info=0');
+            		}else{
+                        $this->redirect('/list?geo_info=&lat='.$lat.'&lng='.$lng);
+            		}
+                }else{
+                    $this->redirect('/?top=');
+                }
             } else {
-                $this->Session->setFlash(__('Invalid username or password, try again'));
+                $this->Session->setFlash('ログインに失敗しました。ユーザ名またはパスワードを確認して下さい。', 'default', array('class' => 'alert alert-warning'));
             }
         }
     }

@@ -7,7 +7,6 @@ class ListController extends AppController
 
 	public function index()
 	{
-
 		//Getパラメータから現在地情報を取得
 		$lat = $this->request->query('lat');
 		$lng = $this->request->query('lng');

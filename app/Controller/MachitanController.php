@@ -11,12 +11,13 @@ class MachitanController extends Controller
 
 	public function index()
 	{
+		$num_of_rankingspot = 3;
 
 		$Spot = ClassRegistry::init('Spot');
 		$spot_ranking_all = $Spot->find('all', array(
 			'fields' => array('id', 'name','like_num','played'),
 			'order' => array('played' => 'desc', 'like_num' => 'desc'),
-      'limit' => 5
+      'limit' => $num_of_rankingspot
 		));
 		$this->set('spot_ranking_all',$spot_ranking_all);
 
@@ -24,7 +25,7 @@ class MachitanController extends Controller
 		$tour_ranking_all = $Tour->find('all', array(
 			'fields' => array('id', 'name','played','played_finished','finished_rate'),
 			'order' => array('finished_rate' => 'desc'),
-      'limit' => 5
+      'limit' => $num_of_rankingspot
 		));
 		$this->set('tour_ranking_all',$tour_ranking_all);
 
