@@ -1,10 +1,21 @@
-<!-- <script src="/js/app/list/index.js"></script> -->
+<?php if(count($events) > 0){
+    for($i = 0; $i < count($events); $i++){ ?>
+        <div class="jumbotron">
+            <h3><?php echo $events[$i]['Event']['name']?></h3>
+            <p><?php echo $events[$i]['Event']['description']?></p>
+            <p><a class="btn btn-primary btn-lg" href="#">このイベントに参加する！</a></p>
+        </div>
+<?php }
+}?>
+
+
+   <!-- <script src="/js/app/list/index.js"></script> -->
     <?php if($num_of_spots > 0){?>
     <br>
     <div style="text-align:center;">
     <!--    <a href="play?spot_id=<?php echo $rand_spot_id ?>&lat=<?php echo $lat ?>&lng=<?php echo $lng?>" class="btn btn-info btn-lg" style="width:100%;">とりあえずぶらりする</a> -->
     <button class="btn btn-info btn-lg" style="width:100%;"  data-toggle="modal" data-target="#myModal">とりあえずぶらりする</button>
-        
+
     </div>
     <br>
     <?php }else{?>
@@ -12,9 +23,30 @@
     <h3>近くにスポットがありません。</h3>
     <?php }?>
     <div style="text-align:center;">
-        <a href="like?first=true" class="btn btn-info btn-lg" style="width:100%;">ナイススポット発見！</a>
+        <a href="like?first=true" class="btn btn-warning btn-fab btn-raised mdi-communication-location-on" style="position:fixed;bottom:15px;right:15px;z-index: 5"></a>
     </div>
     <br>
+    <div class="panel panel-info" id="about-info">
+      <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　スポットプレイランキング</div>
+      <div class="panel-body">
+        <ul class="list-group">
+        <?php
+          for($i = 0; $i < count($spot_ranking); $i++){
+        ?>
+            <li class="list-group-item">
+              <button class="btn btn-default" style="width:100%;"  data-toggle="modal" data-target="#Modal<?php echo $spot_ranking[$i]['Spot']['id'] ?>"><?php echo $spot_ranking[$i]['Spot']['name']?>
+                  <span class="badge badge-info" style="left:10px">
+                      <span class="mdi-maps-directions-walk"></span> <?php  echo $spot_ranking[$i]['Spot']['played'] ?>
+                  </span>
+                  <span class="badge badge-info" style="left:10px">
+                      <span class="mdi-action-thumb-up"></span> <?php  echo $spot_ranking[$i]['Spot']['like_num'] ?>
+                  </span>
+              </button>
+          </li>
+        <?php };?>
+        </ul>
+      </div>
+    </div>
 <div class="panel panel-info" id="about-info">
         <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span>　行きたいところを選んでぶらりする</div>
         <div class="panel-body">
@@ -37,32 +69,46 @@
   <div id="myTabContent" class="tab-content">
 
   <?php for ($i = 1; $i <= 4 ; $i++){?>
+
     <?php if($i == 1){ ?>
-    <div class="tab-pane fade in active" id="tab<?php echo $i ?>">
+        <div class="tab-pane fade in active" id="tab<?php echo $i ?>">
   	<?php }else{ ?>
-    <div class="tab-pane fade" id="tab<?php echo $i ?>">
+        <div class="tab-pane fade" id="tab<?php echo $i ?>">
   	<?php }?>
-        <ul class="list-group">
+
+    <ul class="list-group">
   	<?php
-      $count = 0;
-      while($num_of_spots > $count){
+      $existsItem = false;
+      for($count = 0; $num_of_spots > $count ; $count++){
     ?>
-         <?php if($spots[$count]['Spot']['category_id'] == $i){ ?>
-  	    <li class="list-group-item">
-            <!--   <a href="play?destination_spot_id=<?php echo $spots[$count]['Spot']['id'] ?>&lat=<?php echo $lat ?>&lng=<?php echo $lng?>">
-                  <?php echo $spots[$count]['Spot']['name'] ?>
-              </a> -->
+    <?php if($spots[$count]['Spot']['category_id'] == $i){ ?>
+        <li class="list-group-item">
             <button class="btn btn-default" style="width:100%;"  data-toggle="modal" data-target="#Modal<?php echo $spots[$count]['Spot']['id'] ?>"><?php echo $spots[$count]['Spot']['name']?>
-              <span class="badge badge-info" style="left:10px"> <span class="glyphicon glyphicon-thumbs-up"></span> <?php  echo $spots[$count]['Spot']['like_num'] ?></span></button>
+              <span class="badge badge-info" style="left:10px">
+                  <span class="mdi-maps-directions-walk"></span> <?php  echo $spots[$count]['Spot']['played'] ?>
+              </span>
+                <span class="badge badge-info" style="left:10px">
+                    <span class="mdi-action-thumb-up"></span> <?php  echo $spots[$count]['Spot']['like_num'] ?>
+                </span>
+            </button>
   	    </li>
-        <?php } ?>
-  	<?php
-          $count++;
-      };
-          ?>
+    <?php
+            $existsItem = true;
+        }
+        ?>
+    <?php };
+        if(!$existsItem){
+    ?>
+        <li class="list-group-item">
+            <button class="btn btn-default" style="width:100%;">
+            <span class="mdi-action-report-problem"></span>付近にこのカテゴリのスポットはありません<span class="mdi-action-report-problem"></span>
+            </button>
+        </li>
+    <?php } ?>
   	</ul>
     </div>
   <?php } ?>
+
   <!--ツアータブコンテンツ-->
   <div class="tab-pane fade" id="tab5">
     <ul class="list-group">
@@ -80,7 +126,7 @@
 	</ul>
   </div>
   </div>
-     
+
 </div>
         </div>
     </div>

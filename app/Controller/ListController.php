@@ -7,7 +7,6 @@ class ListController extends AppController
 
 	public function index()
 	{
-
 		//Getパラメータから現在地情報を取得
 		$lat = $this->request->query('lat');
 		$lng = $this->request->query('lng');
@@ -29,7 +28,7 @@ class ListController extends AppController
 		$Spot = ClassRegistry::init('Spot');
 		$spots = $Spot->find('all',
 			array(
-				'fields' => Array('id', 'name', 'category_id', 'description', 'like_num'),
+				'fields' => Array('id', 'name', 'category_id', 'description', 'like_num','played'),
 				'conditions' => array(
 					'and' => array(
 						array('lat BETWEEN ? AND ?' =>
@@ -86,5 +85,33 @@ class ListController extends AppController
 		} else {
 
 		}
+
+        $Event = ClassRegistry::init('Event');
+        $events = $Event->find('all',
+			array(
+				'fields' => Array('id', 'name', 'description'),
+				'conditions' => array(
+					'and' => array(
+						array('startdate <="' . date("Y-m-d H:i:s") . '"'),
+                        array('enddate >="' . date("Y-m-d H:i:s") . '"')
+					)
+				)
+			));
+        $this->set('events', $events);
+
+				$spot_ranking = $Spot->find('all', array(
+					'conditions' => array(
+						'and' => array(
+							array('lat BETWEEN ? AND ?' =>
+								array($lat - $lat_diff, $lat + $lat_diff)),
+							array('lng BETWEEN ? AND ?' =>
+								array($lng - $lng_diff, $lng + $lng_diff))
+						)
+					),
+					'fields' => array('id', 'name','like_num','played'),
+					'order' => array('played' => 'desc', 'like_num' => 'desc'),
+					'limit' => 5
+				));
+				$this->set('spot_ranking',$spot_ranking);
 	}
 }

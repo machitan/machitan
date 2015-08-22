@@ -64,21 +64,10 @@ class LikeController extends AppController
 						chmod("img/machitan_pic/" .$dir_name . "/" . $file_name, 0664);
 						echo $_FILES["picture"]["name"] . "をアップロードしました。";
 						$this->Session->setFlash('スポットが登録されました！', 'default', array('class' => 'alert alert-success'));
-						//$this->redirect('/play?direction_id=' . $direction_id . "&step_id=" . ($step_id) . "&destination_spot_id=" . $destination_spot_id);
+						$this->redirect('/play?direction_id=' . $direction_id . "&step_id=" . ($step_id) . "&destination_spot_id=" . $destination_spot_id);
 
 					}
-                    
-					//canvasデータがPOSTで送信されてきた場合
-					$canvas = $this->request->data('reseizedImage');
-					//ヘッダに「data:image/png;base64,」が付いているので、それは外す
-					$canvas = preg_replace("/data:[^,]+,/i","",$canvas);
-					//残りのデータはbase64エンコードされているので、デコードする
-					$canvas = base64_decode($canvas);
-					//まだ文字列の状態なので、画像リソース化
-					$image = imagecreatefromstring($canvas);
-					//画像として保存（ディレクトリは任意）
-					imagepng($image ,'img/machitan_pic/resizetest.png');
-                    
+					
 				} else {
 					//ファイルのアップロードの失敗
 					$this->Session->setFlash('ファイルをアップロードできません。', 'default', array('class' => 'alert alert-success'));

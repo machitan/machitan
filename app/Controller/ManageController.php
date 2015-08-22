@@ -135,7 +135,32 @@ class ManageController extends AppController
 			);
 		}
 	}
- 
+
+	public function delspot(){
+    }
+
+	public function delspotresult(){
+        $Spot = ClassRegistry::init('Spot');
+        $TourSpotRel = ClassRegistry::init('TourSpotRel');
+        $DirectionSpotRel = ClassRegistry::init('DirectionSpotRel');
+
+		$del_data = $this->request->data;
+        for($i = 1; $i <= $del_data['del_num']; $i++){
+            if(isset($del_data['del_check'.$i])){
+                $TourSpotRel->deleteAll(
+                    array('TourSpotRel.spot_id' => $del_data['del_check'.$i])
+                );
+                $DirectionSpotRel->deleteAll(
+                    array('DirectionSpotRel.spot_id' => $del_data['del_check'.$i])
+                );
+                $Spot->delete(($del_data['del_check'.$i]));
+            }
+        }
+		$this->Session->setFlash('スポットが削除されました', 'default', array('class' => 'alert alert-success'));
+		$this->redirect('/manage/delspot');
+    }
+
+        
 	public function add()
 	{
 		/**

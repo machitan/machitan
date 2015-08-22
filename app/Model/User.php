@@ -1,0 +1,40 @@
+<?php
+
+App::uses('Model', 'Model');
+App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
+
+class User extends Model {
+    public $validate = array(
+            'username' => array(
+                'required' => array(
+                    'rule' => array('notEmpty'),
+                    'message' => 'A username is required'
+                    )
+                ),
+            'password' => array(
+                'required' => array(
+                    'rule' => array('notEmpty'),
+                    'message' => 'A password is required'
+                    )
+                ),
+            'role' => array(
+                'valid' => array(
+                    'rule' => array('inList', array('admin', 'author')),
+                    'message' => 'Please enter a valid role',
+                    'allowEmpty' => false
+                    )
+                )
+            );
+public function beforeSave($options = array()) {
+        debug($options);
+        if (isset($this->data[$this->alias]['password'])) {
+            $passwordHasher = new BlowfishPasswordHasher();
+            $this->data[$this->alias]['password'] = $passwordHasher->hash(
+                    $this->data[$this->alias]['password']
+                    );
+        }
+        return true;
+    }
+
+}
+    

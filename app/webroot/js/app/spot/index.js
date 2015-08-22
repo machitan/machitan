@@ -19,17 +19,6 @@ $(function(){
       }, true);
   }, true);
 
-  $('#like_form').submit(function(event){
-    event.preventDefault();
-    alert("ok");
-    $.ajax({
-        type:   "GET",
-        url:    "spot/like",
-        data:   {
-            $form.serialize();
-        }
-    });
-    return true;
-  });
+
 });
 	

@@ -12,11 +12,14 @@ class SpotController extends AppController
 		$spot_id = $this->request->query('spot_id');
 		$destination_spot_id = $this->request->query('destination_spot_id');
 		$comment_body = $this->request->query('comment_body');
+		$tour_id = $this->request->query('tour_id');
+        $user = $this->Auth->user();
 
 		$this->set('direction_id', $direction_id);
 		$this->set('step_id', $step_id);
 		$this->set('spot_id', $spot_id);
 		$this->set('destination_spot_id', $destination_spot_id);
+		$this->set('tour_id', $tour_id);
 
 		$Spot = ClassRegistry::init('Spot');
 		$spot_info = $Spot->find('all',
@@ -41,11 +44,38 @@ class SpotController extends AppController
 
 		$comments = $Comments->find('all', array('conditions' => array('spot_id' => $spot_id)));
 		$this->set('comments', $comments);
-
+        
+        //経由したスポット履歴登録
+        if($user != null){
+            $user_spot_history = ClassRegistry::init('UserSpotHistory');
+            $user_spot_history->save(
+                array(
+                    'UserSpotHistory' => array(
+                        'user_id' => $user['id'],
+                        'spot_id' => $spot_id
+                    )
+                )
+            );
+        }
 	}
 
 	public function like()
 	{
+		      if($this->request->is('ajax')) {
+            $Spot = ClassRegistry::init('Spot');
+            $spot_id = $this->request->data('spot_id');
+            $like_count = $this->request->data('like_count');
+
+            $Spot->id = $spot_id;
+            $Spot->save(
+                array(
+                    'Spot' => array(
+                        'like_num' => $like_count
+                    )
+                )
+            );
+        }
+        /*
 		$direction_id = $this->request->query('direction_id');
 		$step_id = $this->request->query('step_id');
 		$spot_id = $this->request->query('spot_id');
@@ -67,9 +97,10 @@ class SpotController extends AppController
 		if ($Spot->save($data, false, $fields)) {
 			$this->redirect('/spot?direction_id=' . $direction_id . "&step_id=" . ($step_id) . "&spot_id=" . $spot_id . "&destination_spot_id=" . $destination_spot_id);
 		} else {
-		}
+		}*/
 
 	}
+
 	public function add_image(){
 		$direction_id = $this->request->data('direction_id');
 		$spot_id = $this->request->data('spot_id');
