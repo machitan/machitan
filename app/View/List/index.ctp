@@ -1,9 +1,10 @@
 <?php if(count($events) > 0){ ?>
   <div class="container">
     <?php for($i = 0; $i < count($events); $i++){ ?>
-      <div class="jumbotron" style="background-image:url('img/<?php echo $events[$i]['Event']['pic_url']?>'); background-position: center center; background-size:cover;">
-        <div>
-          <div class="container">
+      <div class="jumbotron" style="background-color: rgba(100,100,100,1);">
+        <div style="background-image:url('img/<?php echo $events[$i]['Event']['pic_url']?>'); background-position: center center; background-size:cover;">
+          <div class="container" style="background-color: rgba(255,255,255,0.2);">
+            <br>
             <span class="badge"><span>開催中イベント</span><i class="mdi-action-announcement"></i></span>
             <h3 style="color: #fff; text-shadow: 2px 2px 8px rgba(0,0,0,1);">
             <?php echo $events[$i]['Event']['name']?>
@@ -12,7 +13,7 @@
             <?php echo $events[$i]['Event']['description']?>
           </span>
             <p>
-              <a class="btn btn-primary btn-lg" href="#">このイベントに参加する！</a>
+              <a class="btn btn-primary btn-lg btn-raised" href="#">このイベントに参加する！</a>
             </p>
           </div>
         </div>
@@ -44,7 +45,7 @@
           <div class="jumbotron">
             <h4><i class="mdi-action-explore"></i> ツアーをえらんでぶらり</h4>
             <hr>
-            <div class="list-group" id="candidate_spots">
+            <div class="list-group">
               <?php for($i = 0; $i < count($tours); $i++){
                 exec("ls img/machitan_pic/" . $tours[$i]['tour_spot_rels']['spot_id'] , $files);
                 if(isset($files[0])){
@@ -58,18 +59,18 @@
                 };
                 unset($files);
               ?>
-                <div class="list-group-item btn btn-default btn-raised" data-toggle="modal" data-target="#TourModal<?php echo $tours[$i]['Tour']['id'] ?>" style="background-image:url('<?php echo $image_src?>'); background-position: center center; background-size:cover;">
-                  <div style="background-color: rgba(255,255,255,0.3); margin-left:-100px; margin-right:-100px;">
-                    <div class="row-content">
-                      <h5 class="list-group-item-heading" style="color: #fff; text-shadow: 2px 2px 8px rgba(0,0,0,1);">
-                          <?php echo $tours[$i]['Tour']['name'] ?>
-                        </h5>
-                        <span class="badge badge-info" style="left:10px">
-                                <span class="mdi-action-favorite"></span>
-                        <?php echo $tours[$i]['Tour']['finished_rate'] ?>
+                <div class="list-group-item btn btn-defaul btn-raised" data-toggle="modal" data-target="#TourModal<?php echo $tours[$i]['Tour']['id'] ?>" style="width:100%; background-image:url('<?php echo $image_src?>'); background-position: center center; background-size:cover;">
+                    <div style="background-color: rgba(255,255,255,0.3); margin-left:-100px; margin-right:-100px;">
+                        <div class="row-content">
+                            <h5 class="list-group-item-heading" style="color: #fff; text-shadow: 2px 2px 8px rgba(0,0,0,1);">
+                                <?php echo $tours[$i]['Tour']['name'] ?>
+                            </h5>
+                            <span class="badge badge-info">
+                                    <span class="mdi-action-favorite"></span>
+                            <?php echo $tours[$i]['Tour']['finished_rate'] ?>
                             </span>
+                        </div>
                     </div>
-                  </div>
                 </div>
                 <?php } ?>
             </div>
@@ -88,7 +89,7 @@
                         <i class="mdi-action-trending-up"></i>
                       </h4>
                       <hr>
-                      <div class="list-group" id="candidate_spots">
+                      <div class="list-group">
                         <?php for($i = 0; $i < count($spot_ranking); $i++){
                           exec("ls img/machitan_pic/" . $spot_ranking[$i]['Spot']['id'] , $files);
                           if(isset($files[0])){
@@ -108,11 +109,11 @@
                                 <h5 class="list-group-item-heading" style="color: #fff; text-shadow: 2px 2px 8px rgba(0,0,0,1);">
                                     <?php echo $spot_ranking[$i]['Spot']['name'] ?>
                                   </h5>
-                                <span class="badge badge-info" style="left:10px">
+                                <span class="badge badge-info">
                                     <span class="mdi-maps-directions-walk"></span>
                                 <?php echo $spot_ranking[$i]['Spot']['played'] ?>
                                   </span>
-                                  <span class="badge badge-info" style="left:10px">
+                                  <span class="badge badge-info">
                                     <span class="mdi-action-thumb-up"></span>
                                   <?php echo $spot_ranking[$i]['Spot']['like_num']?>
                                     </span>
@@ -140,7 +141,7 @@
                         ?>
                       </h4>
                         <hr>
-                        <div class="list-group" id="candidate_spots">
+                        <div class="list-group">
                           <?php for($i = 0; $i < count($spots); $i++){
                               if($spots[$i]['Spot']['category_id'] == $category_id){
                               exec("ls img/machitan_pic/" . $spots[$i]['Spot']['id'] , $files);
