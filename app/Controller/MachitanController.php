@@ -49,4 +49,7 @@ class MachitanController extends Controller
 		$this->set('geo_info', $this->request->query('geo_info'));
 	}
 
+	public function manualplayer() {
+
+	}
 }

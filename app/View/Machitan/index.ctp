@@ -310,7 +310,7 @@
             <table class="table table-hover ">
                 <tbody>
                     <tr>
-                        <td>まちたん！の使い方（まちあるきする方）</td>
+                        <td><a href="machitan/manualplayer">まちたん！の使い方（まちあるきする方）</a></td>
                     </tr>
                     <tr>
                         <td>まちたん！の使い方（イベント企画者）</td>
