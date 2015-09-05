@@ -100,6 +100,11 @@ $time_newest = time();
          <!--  sweetalert -->
         <script src="/vendors/sweetalert2-master/dist/sweetalert2.min.js"></script>
         <link rel="stylesheet" type="text/css" href="/vendors/sweetalert2-master/dist/sweetalert2.css">
+
+        <!-- intro js -->
+        <script src="/vendors/intro.js-1.1.1/minified/intro.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="/vendors/intro.js-1.1.1/minified/introjs.min.css">
+
     </head>
 
     <body>

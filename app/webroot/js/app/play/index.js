@@ -82,8 +82,8 @@ app.params = app.params || {};
                 closeOnConfirm: true
             }, function(res){
               if (res) {
-                 // show instruction
-                 $("#instruction").modal('show');
+                 // show introduction
+                 introJs().start();
               } else {
                 // go back
                 history.back();
@@ -145,7 +145,7 @@ app.params = app.params || {};
         to = new google.maps.LatLng(app.params.end_location.lat, app.params.end_location.lng);
         distance = google.maps.geometry.spherical.computeDistanceBetween(from, to);
         // 15m以内ならゴールとする
-        return (distance < 10) ? true : false;
+        return (distance < 15) ? true : false;
     }
 
 
@@ -256,6 +256,40 @@ app.params = app.params || {};
             }
         }
     }
+
+var defaultOrientation; // window.orientationが0または180の時に縦長であればtrue
+
+// 初期化処理
+window.addEventListener('load', function() {
+  if('orientation' in window) {
+    var o1 = (window.innerWidth < window.innerHeight);
+    var o2 = (window.orientation % 180 == 0);
+    defaultOrientation = (o1 && o2) || !(o1 || o2);
+    checkOrientation();
+  }
+  // もしあれば、その他Webアプリの初期化処理
+}, false);
+
+// iOSの場合とそれ以外とで画面回転時を判定するイベントを切り替える
+var event = navigator.userAgent.match(/(iPhone|iPod|iPad)/) ? 'orientationchange' : 'resize';
+
+// 画面回転時に向きをチェック
+window.addEventListener(event, checkOrientation, false);
+function checkOrientation () {
+  if('orientation' in window) {
+    // defaultOrientationがtrueの場合、window.orientationが0か180の時は縦長
+    // defaultOrientationがfalseの場合、window.orientationが-90か90の時は縦長
+    var o = (window.orientation % 180 == 0);
+    if((o && defaultOrientation) || !(o || defaultOrientation)) {
+      // 縦長
+      $('div.info').show();
+    }
+    else {
+      // 横長
+      $('div.info').hide();
+    }
+  }
+};
 
 })();
 

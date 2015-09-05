@@ -25,34 +25,6 @@
 </script>
 <script type="text/javascript" src="/js/app/play/index.js">
 </script>
-    <!-- Modal Window Start -->
-    <div class="modal active" id="instruction" style="">
-       <div class="modal-dialog">
-          <div class="modal-content">
-             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">遊び方</h4>
-             </div>
-             <div class="modal-body">
-                <p>
-                   <ol>
-                        <li>
-                            写真のスポットを探そう！
-                        </li>
-                        <li>
-                            写真の場所が分からなかったら、「次の方向」と「地図」をヒントに進む！<br />
-                            でも点数が下がってしまうから、使いすぎには気をつけましょー
-                        </li>
-                   </ol>
-                </p>
-             </div>
-             <div class="modal-footer">
-                <button type="button" class="btn btn-lg btn-primary" data-dismiss="modal">Start</button>
-             </div>
-          </div>
-       </div>
-    </div>
-    <!-- Modal Window End -->
 
     <div class="progress" style="position:relative;overflow: visible;">
         <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="<?php echo $current_progress; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $current_progress; ?>%">
@@ -66,22 +38,9 @@
     </div>
 
 
-    <!--タブ-->
-    <!--
-    <ul class="nav nav-tabs">
-        <li class="active">
-            <a href="#tab1" data-toggle="tab"><span class="glyphicon glyphicon-info-sign"></span> 次のスポット</a>
-        </li>
-        <li><a href="#tab2" data-toggle="tab"><span class="glyphicon glyphicon-circle-arrow-up"></span> 次の方向</a>
-        </li>
-        <li><a href="#tab3" data-toggle="tab"><span class="glyphicon glyphicon-map-marker"></span> 地図</a>
-        </li>
-    </ul>
-    -->
-    <!--タブコンテンツ-->
     <div id="myTabContent" class="tab-content">
        
-       <div id="distance-message" class="alert alert-dismissable alert-info">
+       <div id="distance-message" class="alert alert-dismissable alert-info" data-step="2" data-intro="スポットまでの距離です。距離をヒントにスポットを探しましょう。">
          <i class="fa-li fa fa-refresh fa-spin fa-3x"></i>
          <div style="display:none;">
            残り <br /> <span></span>
@@ -89,7 +48,7 @@
        </div>
        
        <!-- スポット情報 -->
-        <div class="tab-pane fade in active" id="tab1">
+        <div class="tab-pane fade in active" id="tab1"  data-step="1" data-intro="写真に写っているスポットを探しましょう！スポットはあなたのすぐそばにあります。">
             <div class="flexslider">
                 <ul class="slides">
                     <li>
@@ -107,12 +66,21 @@
                 </ul>
             </div>
         </div>
-
     </div>
-    <a href="#" data-toggle="modal" data-target="#next-direction" class="btn btn-info btn-fab  btn-raised mdi-maps-directions btn-left2"></a>
-    <a href="#" data-toggle="modal" data-target="#next-spot-map" class="btn btn-info btn-fab  btn-raised mdi-maps-map btn-left"></a>
+
+   <div class="info">
+      <i class="mdi-action-info-outline" style="font-size:3em;"></i> <br/>
+      横向き推奨<br />
+      <i class="mdi-device-screen-rotation" style="font-size:3em;"></i>
+   </div>
+
+    <a href="#" data-toggle="modal" data-target="#next-direction" class="btn btn-info btn-fab  btn-raised mdi-maps-directions btn-left2"
+      data-step="4" data-intro="ヒント機能1: スポットの方向が分からなくなったらコチラ。スポットの方向が分かります。" data-position="top"></a>
+    <a href="#" data-toggle="modal" data-target="#next-spot-map" class="btn btn-info btn-fab  btn-raised mdi-maps-map btn-left"
+      data-step="5" data-intro="ヒント機能2: 道に迷ってしまったら、次のスポットまでの地図を見ることも出来ます。"  data-position="top"></a>
     <a href="/like?direction_id=<?php echo $direction_id ?>&step_id=<?php echo $previous_step_id ?>&destination_spot_id<?php echo $destination_spot_id ?>" 
-       class="btn btn-info btn-fab  btn-raised mdi-image-camera-alt btn-right"></a>
+       class="btn btn-info btn-fab  btn-raised mdi-image-camera-alt btn-right"
+         data-step="6" data-intro="プレイ中に街の素敵な風景を見つけたら、スポット登録もしてみましょう！" data-position="top"></a>
 
     <form id="arrival" action="<?php if ($spot != null){ ?>/spot<?php } else {?>/play<?php } ?>" method="get">
         <input type="hidden" name="direction_id" value="<?php echo $direction_id ?>" />
@@ -122,7 +90,8 @@
             <input type="hidden" name="spot_id" value="<?php echo $spot['id'] ?>" />
         <?php } ?>
         <input type="hidden" name="tour_id" value="<?php echo $tour_id ?>" />
-        <button type="submit" class="btn btn-warning btn-fab  btn-raised mdi-maps-beenhere btn-center" style="margin-left:-28px;"></button>
+        <button type="submit" class="btn btn-warning btn-fab  btn-raised mdi-maps-beenhere btn-center" style="margin-left:-28px;" 
+       data-step="3" data-intro="写真のスポットに到着したら、押しましょう！次のスポットに進みます。"  data-position="top"></button>
     </form>
 
 <!-- 次に進む方向dialog start -->
