@@ -10,6 +10,7 @@ class LikeController extends AppController
 		$direction_id = $this->request->query('direction_id');
 		$step_id = $this->request->query('step_id');
 		$destination_spot_id = $this->request->query('destination_spot_id');
+		$tour_id = $this->request->query('tour_id');
 
 		//Listからの遷移時にスポット登録後Listへリダイレクト
 		if ($this->request->query('first')) {
@@ -20,6 +21,7 @@ class LikeController extends AppController
 		}
 		$this->set('step_id', $step_id);
 		$this->set('destination_spot_id', $destination_spot_id);
+		$this->set('tour_id', $tour_id);
 
 	}
 

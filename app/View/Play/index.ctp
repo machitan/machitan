@@ -78,7 +78,7 @@
       data-step="4" data-intro="ヒント機能1: スポットの方向が分からなくなったらコチラ。スポットの方向が分かります。" data-position="top"></a>
     <a href="#" data-toggle="modal" data-target="#next-spot-map" class="btn btn-info btn-fab  btn-raised mdi-maps-map btn-left"
       data-step="5" data-intro="ヒント機能2: 道に迷ってしまったら、次のスポットまでの地図を見ることも出来ます。"  data-position="top"></a>
-    <a href="/like?direction_id=<?php echo $direction_id ?>&step_id=<?php echo $previous_step_id ?>&destination_spot_id<?php echo $destination_spot_id ?>" 
+    <a href="/like?direction_id=<?php echo $direction_id ?>&step_id=<?php echo $previous_step_id ?>&destination_spot_id=<?php echo $destination_spot_id ?>&tour_id=<?php echo $tour_id ?>" 
        class="btn btn-info btn-fab  btn-raised mdi-image-camera-alt btn-right"
          data-step="6" data-intro="プレイ中に街の素敵な風景を見つけたら、スポット登録もしてみましょう！" data-position="top"></a>
 
