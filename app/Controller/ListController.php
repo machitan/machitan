@@ -61,7 +61,7 @@ class ListController extends AppController
 			array(
 				'joins' => $joins,
 				'alias' => 'Tour',
-				'fields' => Array('Tour.id', 'Tour.name', 'Tour.description', 'tour_spot_rels.spot_id'),
+				'fields' => Array('Tour.id', 'Tour.name', 'Tour.description', 'tour_spot_rels.spot_id', 'Tour.finished_rate'),
 				'conditions' => array(
 					'and' => array(
 						array('lat BETWEEN ? AND ?' =>
@@ -89,7 +89,7 @@ class ListController extends AppController
         $Event = ClassRegistry::init('Event');
         $events = $Event->find('all',
 			array(
-				'fields' => Array('id', 'name', 'description'),
+				'fields' => Array('id', 'name', 'description','pic_url'),
 				'conditions' => array(
 					'and' => array(
 						array('startdate <="' . date("Y-m-d H:i:s") . '"'),
