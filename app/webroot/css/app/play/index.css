@@ -10,6 +10,61 @@ div#katamacchi img{
     top: -19px;
 }
 
+.tab-content {
+    position: relative;
+}
+
+#distance-message {
+    text-align: center;
+    padding: 10px;
+    position: absolute;
+    display: block;
+    top: 10px;
+    right: 10px;
+    width: 120px;
+    height: 80px;
+    z-index: 10;
+    color: rgba(255,255,255,0.8);
+    background-color: rgba(0, 150, 136, 0.7);
+    border-radius: 10px;
+}
+
+  #distance-message i {
+    position: initial;
+    margin-top: 5px;
+  }
+
+  #distance-message span {
+    font-size: 1.75em;
+    font-weight: bold;
+  }
+
+.btn-left {
+  position: fixed;
+  bottom: 15px;
+  left: 15px;
+  z-index: 10;
+}
+.btn-left2 {
+  position: fixed;
+  bottom: 76px;
+  left: 15px;
+  z-index: 10;
+}
+.btn-center {
+  margin-left: -28px;
+  position: fixed;
+  bottom: 15px;
+  left: 50%;
+  z-index: 10;
+}
+.btn-right {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  z-index: 10;
+}
+
 span.goal{
     position: absolute;
     right: -7px;
@@ -33,4 +88,16 @@ span.goal{
 }
 .flex-control-nav {
   display: none;
+}
+
+.swal-play {
+  height : 80%;
+}
+
+.open>.dropdown-menu {
+  position: absolute;
+  bottom: 10%;
+  left: 10%;
+  z-index: 100;
+  display: table;
 }

@@ -24,7 +24,8 @@ $time_newest = time();
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+        <meta name="apple-mobile-web-app-capable" content="yes" />
 
         <title>
             <?php echo $cakeDescription ?>
@@ -60,7 +61,7 @@ $time_newest = time();
 
         <style async src="/css/cake.generic"></style>
        
-        <script async src="/js/bootstrap.min.js"></script>
+        <script async src="/js/bootstrap.js"></script>
         <script src="/js/material.min.js"></script>
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -97,8 +98,8 @@ $time_newest = time();
          </script>
          
          <!--  sweetalert -->
-         <script src="/js/sweetalert.min.js"></script>
-         <link rel="stylesheet" type="text/css" href="/css/sweetalert.css">   
+        <script src="/vendors/sweetalert2-master/dist/sweetalert2.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="/vendors/sweetalert2-master/dist/sweetalert2.css">
     </head>
 
     <body>

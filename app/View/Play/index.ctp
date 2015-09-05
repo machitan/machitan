@@ -65,11 +65,9 @@
         </span>
     </div>
 
-    <div id="distance-message" class="alert alert-dismissable alert-info">
-       写真のスポットまでの距離を計測中...
-    </div>
 
     <!--タブ-->
+    <!--
     <ul class="nav nav-tabs">
         <li class="active">
             <a href="#tab1" data-toggle="tab"><span class="glyphicon glyphicon-info-sign"></span> 次のスポット</a>
@@ -79,9 +77,18 @@
         <li><a href="#tab3" data-toggle="tab"><span class="glyphicon glyphicon-map-marker"></span> 地図</a>
         </li>
     </ul>
+    -->
     <!--タブコンテンツ-->
     <div id="myTabContent" class="tab-content">
-        <!-- スポット情報 -->
+       
+       <div id="distance-message" class="alert alert-dismissable alert-info">
+         <i class="fa-li fa fa-refresh fa-spin fa-3x"></i>
+         <div style="display:none;">
+           残り <br /> <span></span>
+         </div>
+       </div>
+       
+       <!-- スポット情報 -->
         <div class="tab-pane fade in active" id="tab1">
             <div class="flexslider">
                 <ul class="slides">
@@ -101,53 +108,51 @@
             </div>
         </div>
 
-        <!-- 次のスポットの方角を向いた写真 -->
-        <div class="tab-pane fade" id="tab2">
-            <img id="direction" border="0" class="img-thumbnail" style="width:100%;">
-        </div>
-
-        <!-- 次のスポット情報 -->
-        <div class="tab-pane fade" id="tab3">
-           <div id="map-canvas" style="height:300px;"></div>
-        </div>
     </div>
-<div class="container" >
+    <a href="#" data-toggle="modal" data-target="#next-direction" class="btn btn-info btn-fab  btn-raised mdi-maps-directions btn-left2"></a>
+    <a href="#" data-toggle="modal" data-target="#next-spot-map" class="btn btn-info btn-fab  btn-raised mdi-maps-map btn-left"></a>
+    <a href="/like?direction_id=<?php echo $direction_id ?>&step_id=<?php echo $previous_step_id ?>&destination_spot_id<?php echo $destination_spot_id ?>" 
+       class="btn btn-info btn-fab  btn-raised mdi-image-camera-alt btn-right"></a>
 
-    <?php   if ($spot != null){ ?>
-    <form action="/spot" method="get">
+    <form id="arrival" action="<?php if ($spot != null){ ?>/spot<?php } else {?>/play<?php } ?>" method="get">
         <input type="hidden" name="direction_id" value="<?php echo $direction_id ?>" />
         <input type="hidden" name="step_id" value="<?php echo $step_id ?>" />
         <input type="hidden" name="destination_spot_id" value="<?php echo $destination_spot_id ?>" />
-        <input type="hidden" name="spot_id" value="<?php echo $spot['id'] ?>" />
-        <input type="hidden" name="tour_id" value="<?php echo $tour_id ?>" />
-        <input type="submit" class="btn btn-info btn-lg goalbutton" value="スポット到着！" style="width:100%;" onClick="return isGoal('スポット')"/>
-    </form>
-    <?php   } else {?>
-    <form action="/play" method="get">
-        <!--
-        <input type="hidden" name="spot_id" value="<?php echo $spot_id ?>" />
-        -->
-        <input type="hidden" name="direction_id" value="<?php echo $direction_id ?>" />
-        <input type="hidden" name="step_id" value="<?php echo $step_id ?>" />
-        <input type="hidden" name="destination_spot_id" value="<?php echo $destination_spot_id ?>" />
-        <input type="hidden" name="tour_id" value="<?php echo $tour_id ?>" />
-
-        <!-- ここでゴール到着の判定がうまくいってない　高橋 -->
-
-        <?php if ($step->is_last) { ?>
-            <input type="submit" class="btn btn-info btn-lg goalbutton" value="ゴール到着！" style="width:100%;" onClick="return isGoal('ゴール')"/>
-        <!--<?php //} else if ($step && $step->is_way_point) { ?>
-            <input type="submit" class="btn btn-info btn-lg goalbutton" value="経由地到着！" style="width:100%;" onClick="return isGoal('経由地')"/>-->
-        <?php } else {?>
-            <input type="submit" class="btn btn-info btn-lg goalbutton" value="経由地到着！" style="width:100%;" onClick="return isGoal('経由地')"/>
+        <?php if ($spot != null){ ?>
+            <input type="hidden" name="spot_id" value="<?php echo $spot['id'] ?>" />
         <?php } ?>
-    </form>
-    <?php } ?>
-    <form action="/like" method="get">
-        <input type="hidden" name="direction_id" value="<?php echo $direction_id ?>" />
-        <input type="hidden" name="step_id" value="<?php echo $previous_step_id ?>" />
-        <input type="hidden" name="destination_spot_id" value="<?php echo $destination_spot_id ?>" />
-        <input type="submit" class="btn btn-info btn-lg" value="ナイススポット発見！" style="width:100%;" />
+        <input type="hidden" name="tour_id" value="<?php echo $tour_id ?>" />
+        <button type="submit" class="btn btn-warning btn-fab  btn-raised mdi-maps-beenhere btn-center" style="margin-left:-28px;"></button>
     </form>
 
+<!-- 次に進む方向dialog start -->
+<div class="modal fade" id="next-direction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">次に進む方向</h4>
+      </div>
+      <div class="modal-body">
+        <img id="direction" border="0" class="img-thumbnail" style="width:100%;">
+      </div>
+    </div>
+  </div>
 </div>
+<!-- 次に進む方向dialog /end -->
+
+<!-- 次のスポットの地図dialog start -->
+<div class="modal fade" id="next-spot-map" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">次のスポットまでの地図</h4>
+      </div>
+      <div class="modal-body">
+        <div id="map-canvas" style="height:300px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 次のスポットの地図dialog /end -->

@@ -94,8 +94,8 @@ $time_newest = time();
         </script>
 
         <!--  sweetalert -->
-        <script src="/js/sweetalert.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="/css/sweetalert.css">
+        <script src="/vendors/sweetalert2-master/dist/sweetalert2.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="/vendors/sweetalert2-master/dist/sweetalert2.css">
     </head>
 
     <body>
