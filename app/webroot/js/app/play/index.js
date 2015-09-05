@@ -25,34 +25,39 @@ app.params = app.params || {};
         /**
         * イベント定義
         */
-        // タブ切り替え時
-        var hasShownTab2 = false; // tab2が表示されたかどうか
-        var hasShownTab3 = false; // tab3が表示されたかどうか
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-            var activated_tab = e.target; // active tab
-            var tabName = $(activated_tab).attr('href');
+        // ダイアログ表示時
+        $('a[data-target=#next-direction]').click(function(){
+            this.modal();
+        });
+        $('a[data-target=#next-spot-map]').click(function(){
+            this.modal();
+        });
 
-            // tab2の初回表示判定
-            if (tabName == '#tab2' && hasShownTab2 == false) {
-                hasShownTab2 = true;
+        var hasShownNextDirectionDialog = false; // 次の方向ダイアログが表示されたかどうか
+        var hasShownNextSpotMapDialog = false; // 次のスポットまでの地図ダイアログが表示されたかどうか
+        $('#next-direction').on('show.bs.modal', function (e) {
+            // 初回表示判定
+            if (hasShownNextDirectionDialog == false) {
+                hasShownNextDirectionDialog = true;
                 //方向のイメージを表示
                 getDirectionImg();
 
                 // 減点処理
                 updateDirectionsScore(5, app.params.direction_id);
             }
-
-            // tab3の初回表示判定
-            if (tabName == '#tab3' && hasShownTab3 == false) {
-               hasShownTab3 = true;
+          });
+        $('#next-spot-map').on('show.bs.modal', function (e) {
+            // 初回表示判定
+            if (hasShownNextSpotMapDialog == false) {
+               hasShownNextSpotMapDialog = true;
                //地図表示
-               initialize();
+               setTimeout(function(){initialize()},500);
                setTimeout(function(){calcRoute()},1000);
 
                // 減点処理
                updateDirectionsScore(10, app.params.direction_id);
             }
-        });
+          });
     });
 
     /**
@@ -65,11 +70,11 @@ app.params = app.params || {};
 
     // プレイ継続するかどうか確認をとる
     function confirmToContinue () {
-       var warningText = '' + app.params.total_distance + 'm ( 約' + Math.floor(app.params.total_duration / 60) + '分 ) のコースです。\n\nプレイを続けますか?';
+       var warningText = '' + app.params.total_distance + 'm ( 約' + Math.floor(app.params.total_duration / 60) + '分 ) のコースです。<br/><br/>プレイを続けますか?';
 
         swal({
                 title: "",
-                text: warningText,
+                html: warningText,
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
@@ -127,8 +132,7 @@ app.params = app.params || {};
         directionsService.route(request, function(response, status) {
             if (status == google.maps.DirectionsStatus.OK) {
                 directionsDisplay.setDirections(response);
-                
-                $('#map-canvas').appendTo('#tab3');
+               $('#map-canvas').appendTo('#next-spot-map div.modal-body');
             }
         });
     }
@@ -136,73 +140,83 @@ app.params = app.params || {};
     
     
     //スポット到着判定
-    function isGoal(message){
+    function isGoal(){
         from = new google.maps.LatLng(lat,lng);
         to = new google.maps.LatLng(app.params.end_location.lat, app.params.end_location.lng);
         distance = google.maps.geometry.spherical.computeDistanceBetween(from, to);
-        return true;
-        if(distance <= 1000){
-            return true;
-        }else{
-            say('まだゴールじゃないげん！');
-            updateDirectionsScore(3, app.params.direction_id);
-            return false;
+        // 15m以内ならゴールとする
+        return (distance < 10) ? true : false;
+    }
+
+
+    var hasGeo = false; // GPS情報を取得済みかどうか
+
+    function exec(to_lat, to_lng){
+        if (navigator.geolocation) {
+             // 位置情報を取得する
+             navigator.geolocation.getCurrentPosition(
+                // 位置情報取得成功時
+                function (pos) {
+                  lat = pos.coords.latitude;
+                  lng = pos.coords.longitude;
+                  updatePosition(to_lat, to_lng);
+                },
+                // 位置情報取得失敗時
+                function (pos){
+                  alert("GPSをOnにしてください");
+                });
+        } else {
+            alert("GPSをOnにしてください");
         }
     }
 
-    function say(message) {
-        document.getElementById('distance-message').innerText = message
-    }
+    function updatePosition(to_lat, to_lng) {
+        if (isGoal()) {
+            // 現在地がゴールの場合
+            swal({
+                title: "写真のスポットに到着しました！",
+                text: "",
+                showCancelButton: false,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "次のスポットへ",
+                customClass: "swal-play",
+                allowOutsideClick: true
+            }, function(res){
+              if (res) {
+                // 次のスポットへ
+                $("#arrival").submit();
+              } else {
+                // do nothing
+              }
+            });
+        }
 
-    function exec(to_lat,to_lng){
-    if (navigator.geolocation) {
-        // 位置情報を取得する
-        navigator.geolocation.getCurrentPosition(
-                // 位置情報取得成功時
-                function (pos) {
-                lat = pos.coords.latitude;
-                lng = pos.coords.longitude;
-                },
-                // 位置情報取得失敗時
-                // 兼六園の座標を設定
-                function (pos){
-                lat = 36.562127;
-                lng = 136.662458;
-                //alert("GPSをOnにしてください");
-                });
-    } else {
-        lat = 36.562127;
-        lng = 136.662458;
-        //alert("GPSをOnにしてください");
-    }
-
-    if(lat != 0 || lng != 0){
         from = new google.maps.LatLng(lat,lng);
         to = new google.maps.LatLng(to_lat,to_lng);
-
         distance = google.maps.geometry.spherical.computeDistanceBetween(from, to);
 
-        var message = "写真のスポットまで「" + distance.toFixed(1) + "」m ";
+        var message = distance.toFixed(1) + "m";
 
         $msg = $('#distance-message');
         if(distance > 100){
             nearFlag = false;
-            changeClass($msg, 'alert-danger');
         }else if(50 < distance  && distance <= 100){
             nearFlag = false;
             vibrator.slow();
-            changeClass($msg, 'alert-warning');
         }else if(30 < distance  && distance <= 50){
             nearFlag = false;
             vibrator.middle();
-            changeClass($msg, 'alert-info');
         }else if(distance <= 10){
             nearFlag = true;
             vibrator.fast();
-            changeClass($msg, 'alert-success');
         }
-        say(message);
-    }
+        $('#distance-message span').text(message);
+
+        if (hasGeo == false) {
+            $("#distance-message div").show();
+            $("#distance-message i").hide();
+            hasGeo = true;
+        }
     }
 
     // alertのクラスを切り返る
