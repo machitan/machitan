@@ -225,9 +225,12 @@ class PlayController extends Controller
 	private function __findTourDirection($lat, $lng, $tour_id)
 	{
 		// ツアーに含まれるスポットを取得する
-		$tourSpotRels= $this->TourSpotRels->find('all', array('conditions' => array(
-			'tour_id' => $tour_id
-		)));
+		$tourSpotRels= $this->TourSpotRels->find('all',
+			array(
+				'conditions' => array('tour_id' => $tour_id),
+				'order' => array('spot_order' => 'asc')
+			)
+		);
 
 		// 経由地
 		$waypoints = array();
@@ -380,7 +383,7 @@ class PlayController extends Controller
 
 		//API結果判定 20km以上はなれている場合はlistへリダイレクト
 		$res_json = json_decode($res);
-		if ( strstr($res_json->routes[0]->legs[0]->distance->text,"km") && 
+		if ( strstr($res_json->routes[0]->legs[0]->distance->text,"km") &&
              str_replace(" km", "", $res_json->routes[0]->legs[0]->distance->text) >= 20 ) {
 			$this->redirect('/list');
 		}

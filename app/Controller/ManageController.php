@@ -25,7 +25,101 @@ class ManageController extends AppController
 		$this->set('destination_spot_id', $destination_spot_id);
 
 	}
-    
+
+	public function showtour()
+	{
+		$Tour = ClassRegistry::init('Tour');
+		$joins = array(
+			array(
+				'type' => 'inner',
+				'table' => 'tour_spot_rels',
+				'aliau' => 'Goal',
+				'conditions' => array(
+					'Tour.id = tour_spot_rels.tour_id'
+				),
+			),
+		);
+		$tours = $Tour->find('all',
+			array(
+				'joins' => $joins,
+				'alias' => 'Tour',
+				'fields' => Array('Tour.id', 'Tour.name', 'Tour.description', 'tour_spot_rels.spot_id', 'Tour.finished_rate'),
+				'conditions' => array(
+					'and' => array(
+						array('tour_spot_rels.goal_flag' => 1)
+					)
+				)
+			));
+		//検索結果を渡す
+		$this->set('tours', $tours);
+	}
+
+	public function showtourdetail()
+	{
+		$tour_id = $this->request->query['tour_id'];
+		$this->set('tour_id',$tour_id);
+
+		$Tour = ClassRegistry::init('Tour');
+		$joins = array(
+			array(
+				'type' => 'inner',
+				'table' => 'tour_spot_rels',
+				'aliau' => 'Goal',
+				'conditions' => array(
+					'and' => array(
+						array('Tour.id = tour_spot_rels.tour_id'),
+						array('Tour.id' => $tour_id)
+					)
+				),
+			),
+			array(
+				'type' => 'inner',
+				'table' => 'spots',
+				'aliau' => 'Goal',
+				'conditions' => array(
+					'and' => array(
+						array('spots.id = tour_spot_rels.spot_id')
+					)
+				),
+			)
+		);
+		$tours = $Tour->find('all',
+			array(
+				'joins' => $joins,
+				'alias' => 'Tour',
+				'fields' => Array('Tour.id', 'Tour.name', 'Tour.description', 'Tour.route_optimized', 'tour_spot_rels.spot_id', 'Tour.finished_rate', 'tour_spot_rels.goal_flag','spots.lat','spots.lng'),
+				'order' => array('tour_spot_rels.spot_order' => 'asc')
+			)
+		);
+		//$this->set('tours', $tours);
+		$this->set('tour_name', $tours[0]['Tour']['name']);
+		$this->set('tour_description', $tours[0]['Tour']['description']);
+		$this->set('tour_route_optimized', $tours[0]['Tour']['route_optimized']);
+
+		//地図情報の格納と連携
+		$waypoints = array();
+		$center_lat = 0;
+		$center_lng = 0;
+		for($i = 0; $i < count($tours); $i++){
+			$center_lat += $tours[$i]['spots']['lat'];
+			$center_lng += $tours[$i]['spots']['lng'];
+
+			if($tours[$i]['tour_spot_rels']['goal_flag']){
+				$this->set('end_lat',$tours[$i]['spots']['lat']);
+				$this->set('end_lng',$tours[$i]['spots']['lng']);
+	}
+			else{
+				$waypoints[] = $tours[$i]['spots']['lat'] . ',' . $tours[$i]['spots']['lng'];
+			}
+		}
+		$this->set('waypoints',$waypoints);
+		$this->set('num_of_waypoints',count($waypoints));
+
+		$this->set('start_lat',$center_lat/count($tours));
+		$this->set('start_lng',$center_lng/count($tours));
+
+	}
+
 	public function addtour()
 	{
 	}
@@ -33,10 +127,10 @@ class ManageController extends AppController
 	public function addtourresult()
 	{
 		$tour_data = $this->request->data;
-        
+
 		$candidates = array();
 		$tour_description = 'ツアーの説明は入力されていません';
-        
+
 		while ($data = current($tour_data)) {
 			$data_key = key($tour_data);
 			if($data_key == 'tour_name'){
@@ -59,13 +153,13 @@ class ManageController extends AppController
 			}
 			next($tour_data);
 		}
-        
+
 		$this->set('candidates',$candidates);
 		$this->set('tour_name',$tour_name);
 		$this->set('tour_description',$tour_description);
-        
+
 		$waypoints = array();
-        
+
 		$Spots = ClassRegistry::init('Spots');
 		$center_lat = 0;
 		$center_lng = 0;
@@ -77,7 +171,7 @@ class ManageController extends AppController
 									 );
 			$center_lat += $spots_info[0]['Spots']['lat'];
 			$center_lng += $spots_info[0]['Spots']['lng'];
-            
+
 			if($candidates[$k] == $goal_spot){
 				$this->set('end_lat', $spots_info[0]['Spots']['lat']);
 				$this->set('end_lng', $spots_info[0]['Spots']['lng']);
@@ -86,16 +180,16 @@ class ManageController extends AppController
 				$waypoints[] = $spots_info[0]['Spots']['lat'] . ',' . $spots_info[0]['Spots']['lng'];
 			}
 		}
-        
+
 		$this->set('waypoints',$waypoints);
 		$this->set('num_of_waypoints',count($waypoints));
-        
+
 		$center_lat = $center_lat / count($candidates);
 		$center_lng = $center_lng / count($candidates);
-        
+
 		$this->set('start_lat',$center_lat);
 		$this->set('start_lng',$center_lng);
-        
+
 		$Tours = ClassRegistry::init('Tours');
 		$Tours->save(
 			array(
@@ -114,15 +208,15 @@ class ManageController extends AppController
 				)
 			)[0]['Tours']['id'];
 		$this->set('tour_id',$tour_id);
-    
+
 		$TourSpotRels = ClassRegistry::init('TourSpotRels');
 		foreach($candidates as $cand){
-            
+
 			if($cand == $goal_spot)
 				$goal_flag = 1;
 			else
 				$goal_flag = 0;
-            
+
 			$TourSpotRels->create();
 			$TourSpotRels->save(
 				array(
@@ -160,7 +254,7 @@ class ManageController extends AppController
 		$this->redirect('/manage/delspot');
     }
 
-        
+
 	public function add()
 	{
 		/**
@@ -173,12 +267,12 @@ class ManageController extends AppController
 			if(isset($this->request->data['chk_' + $i]))
 				array_push($checks,$this->request->data['chk_' + $i]);
 		}
-        
+
 		$Spots = ClassRegistry::init('Spots');
 		$direction_id = $this->request->data['direction_id'];
 		$step_id = $this->request->data['step_id'];
 		$destination_spot_id = $this->request->data['destination_spot_id'];
-        
+
 		$lat = $this->request->data('lat');
 		$lng = $this->request->data('lng');
 
@@ -231,16 +325,16 @@ class ManageController extends AppController
 			}
 		}
 	}
-    
+
 	public function readsimilar()
 	{
 		$lat = $this->request->query('lat');
 		$lng = $this->request->query('lng');
-        
+
 		//近郊とする緯度経度の範囲
 		$lat_diff = 0.005;
 		$lng_diff = 0.005;
-        
+
 		//現在地をもとに近郊のスポットのみDBから検索
 		$Spot = ClassRegistry::init('Spot');
 		$spots = $Spot->find('all',
@@ -264,6 +358,6 @@ class ManageController extends AppController
 
 		$this->set('lat', $lat);
 		$this->set('lng', $lng);
-    
+
 	}
 }
