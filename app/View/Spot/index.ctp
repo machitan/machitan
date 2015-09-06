@@ -129,6 +129,9 @@
                     </p>
                     <input type="hidden" name="spot_id" value="<?php echo $spot_id?>">
                     <input type="hidden" name="direction_id" value="<?php echo $direction_id?>">
+                    <input type="hidden" name="step_id" value="<?php echo $step_id?>">
+                    <input type="hidden" name="destination_spot_id" value="<?php echo $destination_spot_id?>">
+                    <input type="hidden" name="tour_id" value="<?php echo $tour_id?>">
                 </div>
             </div>
         </form>

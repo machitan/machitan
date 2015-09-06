@@ -104,6 +104,9 @@ class SpotController extends AppController
 	public function add_image(){
 		$direction_id = $this->request->data('direction_id');
 		$spot_id = $this->request->data('spot_id');
+		$step_id = $this->request->data('step_id');
+		$destination_spot_id = $this->request->data('destination_spot_id');
+		$tour_id = $this->request->data('tour_id');
 		if (is_uploaded_file($_FILES["picture"]["tmp_name"])) {
 			if (move_uploaded_file($_FILES["picture"]["tmp_name"], "img/machitan_pic/" . $_FILES["picture"]["name"])) {
 				$dir_name = $spot_id;
@@ -113,16 +116,16 @@ class SpotController extends AppController
 				chmod("img/machitan_pic/" .$dir_name . "/" . $file_name, 0664);
 				echo $_FILES["picture"]["name"] . "をアップロードしました。";
 				$this->Session->setFlash('画像が登録されました！', 'default', array('class' => 'alert alert-success'));
-				$this->redirect('/spot?spot_id=' . $spot_id . "&direction_id=" . $direction_id);
+				$this->redirect('/spot?spot_id=' . $spot_id . "&direction_id=" . $direction_id . "&step_id=" . $step_id . "&destination_spot_id=" . $destination_spot_id . "&tour_id=" . $tour_id);
 			} else {
 				//ファイルのアップロードの失敗
 				$this->Session->setFlash('ファイルをアップロードできません。', 'default', array('class' => 'alert alert-success'));
-				$this->redirect('/spot?spot_id=' . $spot_id . "&direction_id=" . $direction_id);
+				$this->redirect('/spot?spot_id=' . $spot_id . "&direction_id=" . $direction_id . "&step_id=" . $step_id . "&destination_spot_id=" . $destination_spot_id . "&tour_id=" . $tour_id);
 			}
 		} else {
 			//アップロードファイルが未選択
 			$this->Session->setFlash('ファイルが選択されていません。', 'default', array('class' => 'alert alert-success'));
-			$this->redirect('/spot?spot_id=' . $spot_id . "&direction_id=" . $direction_id);
+			$this->redirect('/spot?spot_id=' . $spot_id . "&direction_id=" . $direction_id . "&step_id=" . $step_id . "&destination_spot_id=" . $destination_spot_id . "&tour_id=" . $tour_id);
 		}
 	}
 }
