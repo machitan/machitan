@@ -26,13 +26,6 @@ app.params = app.params || {};
         * イベント定義
         */
         // ダイアログ表示時
-        $('a[data-target=#next-direction]').click(function(){
-            this.modal();
-        });
-        $('a[data-target=#next-spot-map]').click(function(){
-            this.modal();
-        });
-
         var hasShownNextDirectionDialog = false; // 次の方向ダイアログが表示されたかどうか
         var hasShownNextSpotMapDialog = false; // 次のスポットまでの地図ダイアログが表示されたかどうか
         $('#next-direction').on('show.bs.modal', function (e) {
@@ -73,17 +66,22 @@ app.params = app.params || {};
        var warningText = '' + app.params.total_distance + 'm ( 約' + Math.floor(app.params.total_duration / 60) + '分 ) のコースです。<br/><br/>プレイを続けますか?';
 
         swal({
-                title: "",
                 html: warningText,
-                type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "Start",
-                closeOnConfirm: true
+                closeOnConfirm: false
             }, function(res){
               if (res) {
-                 // show introduction
-                 introJs().start();
+                    swal({
+                        html: "チュートリアルを開始します！",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true
+                        }, function(){
+                            // show introduction
+                            setTimeout(function(){introJs().start();},1000);
+                        });
               } else {
                 // go back
                 history.back();
@@ -170,25 +168,21 @@ app.params = app.params || {};
         }
     }
 
+    var hasGoal = false; // ゴールダイアログを表示したかどうか
     function updatePosition(to_lat, to_lng) {
         if (isGoal()) {
-            // 現在地がゴールの場合
-            swal({
-                title: "写真のスポットに到着しました！",
-                text: "",
-                showCancelButton: false,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "次のスポットへ",
-                customClass: "swal-play",
-                allowOutsideClick: true
-            }, function(res){
-              if (res) {
-                // 次のスポットへ
-                $("#arrival").submit();
-              } else {
-                // do nothing
-              }
-            });
+            if (!hasGoal) {
+                // 現在地がゴールの場合
+                swal({
+                    title: "写真のスポットに到着しました！",
+                    text: "",
+                    showCancelButton: false,
+                    confirmButtonColor: "#DD6B55",
+                    customClass: "swal-play",
+                    allowOutsideClick: true
+                    });
+                hasGoal = true;
+            }
         }
 
         from = new google.maps.LatLng(lat,lng);
